@@ -32,8 +32,8 @@ const upload = multer( {
 });
 
 
-// @route GET api/profile
-// @desc  TEST route
+// @route POST api/profile
+// @desc  Upload Resume
 // @access Private
 
 router.post('/', upload.single('resume'), (req, res) => {

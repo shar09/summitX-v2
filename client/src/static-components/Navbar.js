@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const Navbar = ({ setSignUpModalState, setSignInModalState }) => { 
+const Navbar = ({ setSignInModalState }) => { 
     const [ menu, toggleMenu ] = useState(true);
     
     return (
@@ -15,7 +15,6 @@ const Navbar = ({ setSignUpModalState, setSignInModalState }) => {
                 <ul className="nav-links">
                     <li className="nav-item">
                         <a href="#" className={menu ? "btn-primary" : "nav-item-default"}
-                            onClick={() => setSignUpModalState(true)}
                         >Job Seekers</a>
                     </li>
                     <li className="nav-item">

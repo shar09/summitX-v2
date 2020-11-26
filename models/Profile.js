@@ -7,56 +7,58 @@ const ProfileSchema = new mongoose.Schema({
     },
     resume: {
         type: String,
-        required: true
     },
-    website: {
-        type: String
-    },
-    location: {
-        type: String
-    },
-    status: {
+    position: {
         type: String,
         required: true
     },
-    skills: {
-        type: [String],
+    state: {
+        type: String,
         required: true
     },
-    bio: {
+    city: {
+        type: String,
+        required: true
+    },
+    summary: {
+        type: String,
+        required: true
+    },
+    linkedin: {
         type: String
     },
-    githubusername: {
-        type: String
+    skills: {
+        type: [String],
     },
     experience: [
-    {
-        title: {
-            type: String,
-            required: true
-        },
-        company: {
-            type: String,
-            required: true
-        },
-        location: {
-            type: String
-        },
-        from: {
-            type: Date,
-            required: true
-        },
-        to: {
-            type: Date
-        },
-        current: {
-            type: Boolean,
-            default: false
-        },
-        description: {
-            type: String
+        {
+            company: {
+                type: String,
+                required: true
+            },
+            title: {
+                type: String,
+                required: true
+            },
+            location: {
+                type: String
+            },
+            from: {
+                type: Date,
+                required: true
+            },
+            to: {
+                type: Date
+            },
+            current: {
+                type: Boolean,
+                default: false
+            },
+            description: {
+                type: String
+            }
         }
-    }],
+    ],
     education: [
         {
             school: {
@@ -87,14 +89,6 @@ const ProfileSchema = new mongoose.Schema({
             }
         }
     ],
-    social: {
-        twitter: {
-            type: String
-        },
-        linkedin: {
-          type: String
-        }
-    },
     date: {
         type: Date,
         default: Date.now
