@@ -10,7 +10,8 @@ const Profile = require('../../models/Profile');
 // @desc   Register User
 // @access Public
 
-router.post("/", [
+router.post("/", 
+[
     check('firstname', 'first name is required').not().isEmpty(),
     check('lastname', 'last name is required').not().isEmpty(),
     check('email','enter a valid email').isEmail(),
