@@ -1,8 +1,11 @@
 const express = require('express');
 const router = express.Router();
+const { check, validationResult, checkSchema } = require('express-validator');
 const aws = require('aws-sdk');
 const multerS3 = require('multer-s3');
 const multer = require('multer');
+const auth = require('../../middleware/auth');
+const Profile = require('../../models/Profile');
 
 const s3 = new aws.S3({
     accessKeyId: 'AKIATFPOQARMTCE7FGXU',
@@ -25,7 +28,7 @@ const resumeUpload = multer({
     }
 }).single('resume');
 
-function checkFileType( file, cb ){
+function checkFileType( file, cb ) {
     if(file.mimetype === 'application/pdf' || 
         file.mimetype === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
         cb(null, true);
@@ -36,29 +39,204 @@ function checkFileType( file, cb ){
     }
 }
 
-router.post( '/', ( req, res ) => { resumeUpload( req, res, ( error ) => {
-    console.log( 'requestOkokok', req.file );
-    if(error) {
-        // console.log( 'errors', error.message );
-        res.json( { error: error.message } );
-    } else {
-        // If File not found
-        if( req.file === undefined ){
-            console.log( 'Error: No File Selected!' );
-            res.json( 'Error: No File Selected' );
-        } else {
-            // If Success
-            const resumeName = req.file.key;
-            const resumeLocation = req.file.location;   
-            // Save the file name into database into profile model 
-            res.json({
-                resume: resumeName,
-                location: resumeLocation
-            });
-            }
+
+router.post("/", auth, [
+    check('position', 'position is required').not().isEmpty(),
+    check('state', 'state is required').not().isEmpty(),
+    check('city', 'city is required').not().isEmpty(),
+    check('summary', 'summary is required').not().isEmpty(),
+], async (req, res) => {
+    const errors = validationResult(req);
+    if(!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+    const { position, state, city, summary, linkedin } = req.body;
+
+    const profileFields = {
+        user: req.user.id,
+        position,
+        state,
+        city,
+        summary,
+        linkedin
+    }
+
+    try {
+        let profile = await Profile.findOne({ user: req.user.id });
+        if(profile) {
+            profile = await profile.findOneandUpdate(
+                { user: req.user.id },
+                { $set: profileFields },
+                { new: true }
+            )
+            return res.json(profile);
         }
-    });
+        
+        profile = new Profile(profileFields);
+        await profile.save();
+        res.json(profile);
+
+    } catch (err) {
+        console.log(err.message);
+        res.status(500).send('Server Error');   
+    }
 })
+
+
+
+router.post('/resume', auth, ( req, res ) => { resumeUpload( req, res, async ( error ) => {
+    try {
+        if(error) {
+            res.status(400).json({ errors: [{ msg: error.message }] });
+        } else {
+            // If File not found
+            if( req.file === undefined ){
+                res.status(400).json({ errors: [{ msg: "No File Selected" }] });
+            } else {
+                // If Success
+                console.log( 'requestOkokok', req.file );
+                const resumeName = req.file.key;
+                const resumeLocation = req.file.location;   
+                const resume = {
+                    resumeName,
+                    resumeLocation
+                }
+                // Save the file name into database into profile model 
+                const profile = await Profile.findOne({ user: req.user.id });
+
+                if(!profile) {
+                    return res.status(400).json({ errors: [{ msg: "Profile not found "} ] });
+                }
+                
+                profile.resume = resume;
+
+                await profile.save();
+
+                return res.json(profile);
+            }
+        }   
+    } catch (err) {
+        console.log(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+});     
+
+
+
+
+
+
+
+
+// router.post( '/', 
+//     resumeUpload,
+//     check('position', 'position is required').not().isEmpty(),
+//     check('state', 'state is required').not().isEmpty(),
+//     check('city', 'city is required').not().isEmpty(),
+//     check('summary', 'summary is required').not().isEmpty(),
+//     checkSchema({
+//         'resume': {
+//             custom: {
+//                 options: (value, {req}) => {
+//                     // return !!req.file
+//                     if(req.file.mimetype !== 'application/pdf' || 
+//                         req.file.mimetype !== 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+//                            console.log(req.file) 
+//                            return false 
+//                     }
+//                 },
+//                 errorMessage: 'You should upload a PDF file up to 10Mb',
+//             },
+//         } 
+//     }),
+//     async (req, res) => { 
+//     const errors = validationResult(req);
+//     if(!errors.isEmpty()) {
+//         return res.status(400).json({ errors: errors.array() });
+//     }
+//     const {firstname, lastname, email, password, position, summary, city, state} = req.body;
+//     // resumeUpload(req, res, (err) => {
+//     //     if (err) {
+//     //         return res.status(400).json({ errors: [{ msg: err.message }] });
+//     //     }
+//     //     if(req.file === undefined) {
+//     //         return res.status(400).json({ errors: [{ msg: "No file selected" }] });
+//     //     }
+//         try {
+//             // If Success
+//             const resumeName = req.file.key;
+//             const resumeLocation = req.file.location;   
+//             // Save the file name into database into profile model 
+//             res.json({
+//                 resume: resumeName,
+//                 location: resumeLocation
+//             });
+//         } catch (err) {
+//             res.status(500).send('Server Error');
+//         }
+    
+//     // });
+// });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// router.post( '/', 
+//     resumeUpload,
+//     check('position', 'position is required').not().isEmpty(),
+//     check('state', 'state is required').not().isEmpty(),
+//     check('city', 'city is required').not().isEmpty(),
+//     check('summary', 'summary is required').not().isEmpty(),
+//     async (req, res) => { 
+//     const errors = validationResult(req);
+//     if(!errors.isEmpty()) {
+//         return res.status(400).json({ errors: errors.array() });
+//     }
+//     const {firstname, lastname, email, password, position, summary, city, state} = req.body;
+//     resumeUpload(req, res, (err) => {
+//         if (err) {
+//             return res.status(400).json({ errors: [{ msg: err.message }] });
+//         }
+//         if(req.file === undefined) {
+//             return res.status(400).json({ errors: [{ msg: "No file selected" }] });
+//         }
+//         try {
+//             // If Success
+//             const resumeName = req.file.key;
+//             const resumeLocation = req.file.location;   
+//             // Save the file name into database into profile model 
+//             res.json({
+//                 resume: resumeName,
+//                 location: resumeLocation
+//             });
+//         } catch (err) {
+//             res.status(500).send('Server Error');
+//         }
+    
+//     });
+// });
+
+
+
+
 
 
 

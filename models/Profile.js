@@ -6,7 +6,12 @@ const ProfileSchema = new mongoose.Schema({
         ref: 'user'
     },
     resume: {
-        type: Buffer,
+        resumeName: {
+            type: String 
+        },
+        resumeLocation: {
+            type: String
+        }
     },
     position: {
         type: String,
