@@ -8,15 +8,15 @@ const auth = require('../../middleware/auth');
 const Profile = require('../../models/Profile');
 
 const s3 = new aws.S3({
-    accessKeyId: 'AKIATFPOQARMTCE7FGXU',
-    secretAccessKey: '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',
-    Bucket: 'summitxbucket'
+    accessKeyId: `${process.env.awskeyid}`,
+    secretAccessKey: `${process.env.awsaccesskey}`,
+    Bucket: `${process.env.awsbucket}`
 });
 
 const resumeUpload = multer({
     storage: multerS3({
      s3: s3,
-     bucket: 'summitxbucket',
+     bucket: `${process.env.awsbucket}`,
      acl: 'public-read',
      key: function (req, file, cb) {
         cb(null, new Date().toISOString() + file.originalname);
@@ -39,6 +39,32 @@ function checkFileType( file, cb ) {
     }
 }
 
+// @route  GET api/profile/me
+// @desc   get current users profile
+// @access private
+
+router.get("/me", auth, async (req, res) => {  
+    try {
+        const profile = await Profile.findOne({ user : req.user.id }).populate(
+          'user',
+          ['firstname', 'lastname']
+        ); 
+        if(!profile) {
+            return res.status(400).json({msg: 'Profile not found'});
+        }
+        
+        res.json(profile);
+    } catch (err) {
+        console.log(err.message);
+        res.status(500).send('Server error');
+    }
+    
+    // res.send('Profile Route')
+});
+
+// @route  POST api/profile/
+// @desc   create or update user's profile info
+// @access private
 
 router.post("/", auth, [
     check('position', 'position is required').not().isEmpty(),
@@ -82,7 +108,9 @@ router.post("/", auth, [
     }
 })
 
-
+// @route  POST api/profile/resume
+// @desc   upload resume
+// @access private
 
 router.post('/resume', auth, ( req, res ) => { resumeUpload( req, res, async ( error ) => {
     try {
@@ -121,6 +149,331 @@ router.post('/resume', auth, ( req, res ) => { resumeUpload( req, res, async ( e
     }
 });
 });     
+
+// @route  POST api/profile/skills
+// @desc   add skills
+// @access private
+
+router.post('/skills', auth, check('text', 'Skill is required').not().isEmpty(), async (req, res) => {
+
+    const errors = validationResult(req);
+    if(!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }        
+
+    try {
+        const profile = await Profile.findOne({ user: req.user.id });
+
+        if(!profile) {
+            return res.status(400).json({ errors: [{ msg: "Profile not found "} ] });
+        }
+        
+        const skill = { 
+            text: req.body.text
+        }
+        profile.skills.push(skill);
+
+        await profile.save();
+
+        return res.json(profile);
+
+    } catch (err) {
+        console.log(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+// @route  DELETE api/profile/skills/:id
+// @desc   delete skills
+// @access private
+
+router.delete('/skills/:id', auth, async (req, res) => {
+    try {
+        const profile = await Profile.findOne({ user: req.user.id });
+
+        if(!profile) {
+            return res.status(400).json({ errors: [{ msg: "Profile not found "} ] });
+        }
+
+        profile.skills = profile.skills.filter(skill => {
+            return skill.id !== req.params.id
+        })
+        
+        await profile.save();
+
+        res.json(profile);
+    } catch (err) {
+        console.log(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+
+// @route  POST api/profile/experience
+// @desc   Add Experience
+// @access private
+
+router.post('/experience', auth, [
+    check('company', 'Company is required').not().isEmpty(),
+    check('title', 'Title is required').not().isEmpty(),
+    check('description', 'Description is required').not().isEmpty(),
+    check('from', 'From date required').not().isEmpty()
+], async (req, res) => {
+    
+    const errors = validationResult(req);
+    if(!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { company, title, description, from, to } = req.body;
+
+    try {
+        let profile = await Profile.findOne({ user: req.user.id });
+
+        if(!profile) {
+            return res.status(400).json({ errors: [{ msg: "Profile not found "} ] });
+        }
+
+        let experience = {
+            company,
+            title,
+            description,
+            from,
+            to,
+        }
+
+        profile.experience.push(experience);
+
+        await profile.save();
+
+        res.json(profile);
+    } catch (err) {
+        console.log(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+// @route  PUT api/profile/experience/:id
+// @desc   Update Experience
+// @access private
+
+router.put('/experience/:id', auth, [
+    check('company', 'Company is required').not().isEmpty(),
+    check('title', 'Title is required').not().isEmpty(),
+    check('description', 'Description is required').not().isEmpty(),
+    check('from', 'From date is required').not().isEmpty()
+], async (req, res) => {
+    
+    const errors = validationResult(req);
+    if(!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { company, title, description, from, to } = req.body;
+
+    try {
+        let profile = await Profile.findOne({ user: req.user.id });
+
+        if(!profile) {
+            return res.status(400).json({ errors: [{ msg: "Profile not found "} ] });
+        }
+
+        let experience = {
+            company,
+            title,
+            description,
+            from,
+            to
+        }
+
+        await Profile.findOneAndUpdate(
+            { "user": req.user.id, "experience._id": req.params.id },
+            { 
+                "$set": {
+                    "experience.$": experience
+                }
+            },
+            function(err,doc) {
+                // console.log(err);
+            }
+        );
+
+        res.send("Profile Experience Updated");
+    } catch (err) {
+        console.log(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+// @route  DELETE api/profile/experience/:id
+// @desc   delete experience
+// @access private
+
+router.delete('/experience/:id', auth, async (req, res) => {
+    try {
+        let profile = await Profile.findOne({ user: req.user.id });
+
+        if(!profile) {
+            return res.status(400).json({ errors: [{ msg: "Profile not found "} ] });
+        }
+
+        profile.experience = profile.experience.filter(exp => {
+            return exp.id !== req.params.id
+        })
+
+        await profile.save();
+
+        return res.json(profile);
+    } catch (err) {
+        console.log(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+// @route  POST api/profile/education
+// @desc   Add Education
+// @access private
+
+router.post('/education', auth, [
+    check('school', 'School is required').not().isEmpty(),
+    check('degree', 'Degree is required').not().isEmpty(),
+    check('fieldofstudy', 'Field of Study is required').not().isEmpty(),
+    check('from', 'From date is required').not().isEmpty()
+], async (req, res) => {
+    
+    const errors = validationResult(req);
+    if(!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { school, degree, fieldofstudy, description, from, to } = req.body;
+
+    try {
+        let profile = await Profile.findOne({ user: req.user.id });
+
+        if(!profile) {
+            return res.status(400).json({ errors: [{ msg: "Profile not found "} ] });
+        }
+
+        let education = {
+            school,
+            degree,
+            fieldofstudy,
+            description,
+            from,
+            to,
+        }
+
+        profile.education.push(education);
+
+        await profile.save();
+
+        res.json(profile);
+    } catch (err) {
+        console.log(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+// @route  PUT api/profile/experience/:id
+// @desc   Update Experience
+// @access private
+
+router.put('/education/:id', auth, [
+    check('school', 'School is required').not().isEmpty(),
+    check('degree', 'Degree is required').not().isEmpty(),
+    check('fieldofstudy', 'Field of Study is required').not().isEmpty(),
+    check('from', 'From date is required').not().isEmpty()
+], async (req, res) => {
+ 
+    const errors = validationResult(req);
+    if(!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { school, degree, fieldofstudy, description, from, to } = req.body;
+
+    try {
+        let profile = await Profile.findOne({ user: req.user.id });
+
+        if(!profile) {
+            return res.status(400).json({ errors: [{ msg: "Profile not found "} ] });
+        }
+
+        let education = {
+            school,
+            degree,
+            fieldofstudy,
+            description,
+            from,
+            to
+        }
+
+        await Profile.findOneAndUpdate(
+            { "user": req.user.id, "education._id": req.params.id },
+            { 
+                "$set": {
+                    "education.$": education
+                }
+            },
+            function(err,doc) {
+                // console.log(err);
+            }
+        );
+
+        res.send("Profile Education Updated");
+    } catch (err) {
+        console.log(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+
+// @route  DELETE api/profile/education/:id
+// @desc   delete education
+// @access private
+
+router.delete('/education/:id', auth, async (req, res) => {
+    try {
+        let profile = await Profile.findOne({ user: req.user.id });
+
+        if(!profile) {
+            return res.status(400).json({ errors: [{ msg: "Profile not found "} ] });
+        }
+
+        profile.education = profile.education.filter(edu => {
+            return edu.id !== req.params.id
+        });
+
+        await profile.save();
+
+        return res.json(profile);
+    } catch (err) {
+        console.log(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -178,26 +531,6 @@ router.post('/resume', auth, ( req, res ) => { resumeUpload( req, res, async ( e
     
 //     // });
 // });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // router.post( '/', 
 //     resumeUpload,

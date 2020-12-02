@@ -32,9 +32,11 @@ const ProfileSchema = new mongoose.Schema({
     linkedin: {
         type: String
     },
-    skills: {
-        type: [String],
-    },
+    skills: [
+        {
+            text: String
+        }        
+    ],
     experience: [
         {
             company: {
@@ -44,9 +46,6 @@ const ProfileSchema = new mongoose.Schema({
             title: {
                 type: String,
                 required: true
-            },
-            location: {
-                type: String
             },
             from: {
                 type: Date,
