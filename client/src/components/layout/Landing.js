@@ -1,8 +1,7 @@
 import React, { Fragment, useState } from 'react';
-import image1 from '../images/img-1.jpeg';
-import image2 from '../images/img-2.jpeg';
-import image3 from '../images/img-3.jpg';
-import image4 from '../images/img-4.jpg';
+import image1 from '../../images/img-1.jpeg';
+import image3 from '../../images/img-3.jpg';
+import image4 from '../../images/img-4.jpg';
 
 const Landing = () => { 
     return (

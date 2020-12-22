@@ -58,8 +58,6 @@ router.get("/me", auth, async (req, res) => {
         console.log(err.message);
         res.status(500).send('Server error');
     }
-    
-    // res.send('Profile Route')
 });
 
 // @route  POST api/profile/
@@ -566,49 +564,6 @@ router.delete('/education/:id', auth, async (req, res) => {
     
 //     });
 // });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 // const storage = multer.diskStorage({

@@ -3,6 +3,7 @@
 :root {
   --primary-color: #0071e0;
   --primary-hover: #65b0fa;
+  --danger-color: #dc3545;
 }
 
 * {
@@ -105,8 +106,8 @@ body {
 .modal {
   background-color: #efefef;
   width: 500px;
-  height: 500px;
-  margin-top: 40px;
+  height: 550px;
+  margin-top: 70px;
   display: flex;
   flex-direction: column;
   border-radius: 5px;
@@ -161,15 +162,28 @@ body {
 
 .close {
   position: absolute;
-  top: 20px;
+  top: 15px;
   right: 20px;
-  color: #626f7f;
-  font-size: 2em;
   cursor: pointer;
+  font-size: 4.5em;
+}
+
+.close-icon {
+  color: #626f7f;
+  font-size: 0.5em;
 }
 
 .sign-up {
   height: 560px;
+}
+
+.sign-in-error {
+  margin: 0 3rem;
+}
+
+.form-error {
+  color: var(--danger-color);
+  font-size: 14px;
 }
 
 /* Landing */
@@ -339,6 +353,12 @@ body {
 
   /* ---------------------------------------- */
   .modal {
-    margin-top: 0;
+    margin-top: 70px;
+  }
+}
+
+@media only screen and (max-width: 320px) {
+  .modal {
+    margin-top: 50px;
   }
 }
