@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { signIn } from '../../actions/auth';
 
-const SignIn = ({ signInModalState, setSignInModalState, signIn, errors }) => {
+const SignIn = ({ signInModalState, setSignInModalState, signIn, errors, isAuthenticated }) => {
     const [formData, setFormData] = useState({
         email: '',
         password: ''
@@ -27,6 +27,10 @@ const SignIn = ({ signInModalState, setSignInModalState, signIn, errors }) => {
         signIn(email, password);
     }
 
+    if(isAuthenticated) {
+        setSignInModalState(false);
+    }
+
     return (
         signInModalState ? (
         <div className="modal-bg">
@@ -44,10 +48,9 @@ const SignIn = ({ signInModalState, setSignInModalState, signIn, errors }) => {
                         name="email"
                         onChange={handleChange}
                     />
-                    {   errors.map(error => (
-                        // console.log(error.param);
+                    {   errors.map( (error, index) => (
                         error.param === "email" ? 
-                        (<small className="form-error">
+                        (<small key={index} className="form-error">
                             {error.msg}
                         </small>
                         ): <Fragment />   
@@ -62,10 +65,9 @@ const SignIn = ({ signInModalState, setSignInModalState, signIn, errors }) => {
                         name="password"
                         onChange={handleChange}
                     />
-                    {   errors.map(error => (
-                        // console.log(error.param);
+                    {   errors.map( (error, index) => (
                         error.param === "password" ? 
-                        (<small className="form-error">
+                        (<small key={index} className="form-error">
                             {error.msg}
                         </small>
                         ): <Fragment />   
@@ -74,7 +76,7 @@ const SignIn = ({ signInModalState, setSignInModalState, signIn, errors }) => {
                     <small>Forgot password?</small>
                 </section>
                 <button type="submit" className="btn-primary">Sign In</button>
-                <small>Don't have an account? <span class="sign-in-link">Sign Up</span></small>
+                <small>Don't have an account? <span className="sign-in-link">Sign Up</span></small>
             </form>
         </div>
         ) : <Fragment />
@@ -83,11 +85,13 @@ const SignIn = ({ signInModalState, setSignInModalState, signIn, errors }) => {
 
 SignIn.propTypes = {
     signIn: PropTypes.func.isRequired,
-    errors: PropTypes.array.isRequired
+    errors: PropTypes.array.isRequired,
+    isAuthenticated: PropTypes.bool
 }
 
 const mapStateToProps = state => ({
-    errors: state.errors
+    errors: state.errors,
+    isAuthenticated: state.auth.isAuthenticated
 });
 
 export default connect(mapStateToProps, { signIn })(SignIn);

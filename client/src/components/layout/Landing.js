@@ -1,11 +1,20 @@
 import React, { Fragment, useState } from 'react';
+import { Link, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+
+// Images
 import image1 from '../../images/img-1.jpeg';
 import image3 from '../../images/img-3.jpg';
 import image4 from '../../images/img-4.jpg';
 
-const Landing = () => { 
+const Landing = ({ isAuthenticated }) => { 
+    if (isAuthenticated) {
+        return <Redirect to='/dashboard' />;
+    }
+
     return (
-        <div class="landing">
+        <div className="landing">
             <div className="home-grid">
                 <div className="content">
                     <h3 className="content-heading">Who we are</h3>
@@ -46,4 +55,12 @@ const Landing = () => {
     )
 }
 
-export default Landing;
+Landing.propTypes = {
+    isAuthenticated: PropTypes.bool
+}
+
+const mapStateToProps = state => ({
+    isAuthenticated: state.auth.isAuthenticated
+});
+
+export default connect(mapStateToProps)(Landing);

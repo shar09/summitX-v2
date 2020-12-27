@@ -1,23 +1,55 @@
-import { ServiceCatalogAppRegistry } from 'aws-sdk';
 import api from '../utils/api';
 import { setError } from './error';
-import { RESET_ERRORS } from './types'; 
+import { SIGNIN, 
+    SIGNOUT,
+    USER_LOADED,
+    AUTH_ERROR
+} from './types'; 
+import { resetErrors } from './error';
 
+// Load User
+export const loadUser = () => async dispatch => {
+    try {
+        const res = await api.get('/auth');
+
+        dispatch({
+            type: USER_LOADED,
+            payload: res.data
+        });
+    } catch (err) {
+       console.log("auth_error");
+        dispatch({
+            type: AUTH_ERROR
+        });
+    }
+}
+
+// Signin
 export const signIn = (email, password) => async dispatch => {
-    const body = { email, password }
-
+    const body = { email, password };
+    
+    dispatch(resetErrors());    
+    
     try {
         const res = await api.post('/auth', body);
+
+        dispatch({
+            type: SIGNIN,
+            payload: res.data
+        });
+
+        dispatch(loadUser());
     } catch (err) {
-        // console.log(err.response);
         const errors = err.response.data.errors;
 
         if(errors) {
-            dispatch({
-                type: RESET_ERRORS
-            });
             errors.forEach(error => dispatch(setError(error.msg, error.param)));
         }
 
     }
 } 
+
+// Signout
+export const signOut = () => ({
+    type: SIGNOUT
+})

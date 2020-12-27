@@ -1,38 +1,74 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { signOut } from '../../actions/auth';
 
-const Navbar = ({ setSignInModalState }) => { 
+const Navbar = ({ setSignInModalState, isAuthenticated, signOut }) => { 
     const [ menu, toggleMenu ] = useState(false);
+
+    const guestLinks = (
+        <ul className="nav-links">
+            <li className="nav-item">
+                <a href="#" className={!menu || window.innerWidth > 768 ? "btn-primary" : "nav-item-default"}
+                    onClick={() => toggleMenu(!menu)}
+                >Job Seekers</a>
+            </li>
+            <li className="nav-item">
+                <a href="#" className={!menu || window.innerWidth > 768 ? "btn-primary" : "nav-item-default"}
+                    onClick={() => toggleMenu(!menu)}
+                >Employers</a>
+            </li>
+            <li className="nav-item">
+                <span className="nav-item-default" 
+                    onClick={() => { setSignInModalState(true); toggleMenu(!menu) }}
+                >Sign In</span>
+            </li>
+        </ul>
+    )
+
+    const authLinks = (
+        <ul className="nav-links">
+            <li className="nav-item">
+                <a href="#" className={!menu || window.innerWidth > 768 ? "btn-primary" : "nav-item-default"}
+                    onClick={() => toggleMenu(!menu)}
+                >Dashboard</a>
+            </li>
+            <li className="nav-item">
+                <a href="#" className="nav-item-default"
+                    onClick={() => toggleMenu(!menu)}
+                >Account</a>
+            </li>
+            <li className="nav-item">
+                <span className="nav-item-default" 
+                    onClick={() => { signOut(); toggleMenu(!menu) }}
+                >Sign Out</span>
+            </li>
+        </ul>
+    )
     
     return (
         <div className="navbar">
             <a href="#" className="company-logo">summit<span>X</span></a>
-            <button class="menu-icon"
+            <button className="menu-icon"
                 onClick={() => toggleMenu(!menu)}
             >
-               { !menu ?  <i class="fas fa-bars"/> : <i className="fas fa-times"/> }
+               { !menu ?  <i className="fas fa-bars"/> : <i className="fas fa-times"/> }
             </button>
             <div className={!menu ? "navbar-collapse" : "navbar-collapse-active"}>
-                <ul className="nav-links">
-                    <li className="nav-item">
-                        <a href="#" className={!menu || window.innerWidth > 768 ? "btn-primary" : "nav-item-default"}
-                            onClick={() => toggleMenu(!menu)}
-                        >Job Seekers</a>
-                    </li>
-                    <li className="nav-item">
-                        <a href="#" className={!menu || window.innerWidth > 768 ? "btn-primary" : "nav-item-default"}
-                            onClick={() => toggleMenu(!menu)}
-                        >Employers</a>
-                    </li>
-                    <li className="nav-item">
-                        <Link to="/" class="nav-item-default" 
-                            onClick={() => { setSignInModalState(true); toggleMenu(!menu) }}
-                        >Sign In</Link>
-                    </li>
-                </ul>
+                { isAuthenticated ? authLinks : guestLinks }
             </div>
         </div>
     )
 }
 
-export default Navbar;
+Navbar.propTypes = {
+    isAuthenticated: PropTypes.bool,
+    signOut: PropTypes.func.isRequired
+};
+
+const mapStateToProps = state => ({
+    isAuthenticated: state.auth.isAuthenticated
+});
+
+export default connect(mapStateToProps, { signOut })(Navbar);

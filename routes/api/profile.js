@@ -23,7 +23,7 @@ const resumeUpload = multer({
      }
     }),
     limits:{ fileSize: 2000000 }, // In bytes: 2000000 bytes = 2 MB
-    fileFilter: function( req, file, cb ){
+    fileFilter: function( req, file, cb ) {
      checkFileType( file, cb );
     }
 }).single('resume');
@@ -104,7 +104,7 @@ router.post("/", auth, [
         console.log(err.message);
         res.status(500).send('Server Error');   
     }
-})
+});
 
 // @route  POST api/profile/resume
 // @desc   upload resume
@@ -425,7 +425,6 @@ router.put('/education/:id', auth, [
         res.status(500).send('Server Error');
     }
 });
-
 
 // @route  DELETE api/profile/education/:id
 // @desc   delete education

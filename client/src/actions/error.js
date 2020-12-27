@@ -1,4 +1,4 @@
-import { SET_ERROR } from './types';
+import { SET_ERROR, RESET_ERRORS } from './types';
 
 export const setError = (msg, param) => async dispatch => {
     dispatch({
@@ -6,3 +6,7 @@ export const setError = (msg, param) => async dispatch => {
         payload: { msg, param }
     });
 }
+
+export const resetErrors = () => ({
+    type: RESET_ERRORS
+});

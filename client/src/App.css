@@ -74,6 +74,7 @@ body {
 
 .nav-item-default:hover {
   color: var(--primary-hover);
+  cursor: pointer;
 }
 
 .menu-icon {
@@ -233,7 +234,6 @@ body {
 .content-button:hover {
   background-color: var(--primary-hover);
 }
-
 
 /* Media Queries */
 @media only screen and (min-width: 1920px) {
