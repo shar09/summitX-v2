@@ -21,6 +21,12 @@ const UserSchema = new mongoose.Schema({
     date: {
         type: Date,
         default: Date.now
+    },
+    resetToken: {
+        type: String
+    },
+    expireToken: {
+        type: Date
     }
 });
 

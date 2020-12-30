@@ -27,7 +27,7 @@ async (req, res) => {
         // see if users exist
         let user = await User.findOne({ email });
         if(user) {
-            return res.status(400).json({ errors: [{ msg: "User already exists" }] });
+            return res.status(400).json({ errors: [{ param: 'su-email', msg: "Email already exists" }] });
         }
 
         user = new User({

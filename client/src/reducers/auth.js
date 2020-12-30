@@ -1,7 +1,8 @@
 import { SIGNIN, 
     SIGNOUT,
     USER_LOADED,
-    AUTH_ERROR 
+    AUTH_ERROR ,
+    CREATE_ACCOUNT
 } from '../actions/types';
 
 const initialState = {
@@ -23,6 +24,7 @@ function authReducer(state=initialState, action) {
                 loading: false
             }
         case SIGNIN: 
+        case CREATE_ACCOUNT:
             return {
                 ...state,
                 ...payload,

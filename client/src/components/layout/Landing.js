@@ -1,16 +1,31 @@
-import React, { Fragment, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { getProfile } from '../../actions/profile';
 
 // Images
 import image1 from '../../images/img-1.jpeg';
 import image3 from '../../images/img-3.jpg';
 import image4 from '../../images/img-4.jpg';
 
-const Landing = ({ isAuthenticated }) => { 
-    if (isAuthenticated) {
-        return <Redirect to='/dashboard' />;
+const Landing = ({ getProfile, auth: { isAuthenticated },  profile: { profile } }) => { 
+
+    useEffect( () => {
+        getProfile();
+        console.log("landing");
+    }, []);
+
+    if(isAuthenticated && !profile) {
+        return <Redirect to="/signup-two" />
+    }
+
+    if(isAuthenticated && profile && !profile.resume) {
+        return <Redirect to="/signup-three" />
+    }
+
+    if(isAuthenticated && profile && profile.resume) {
+        return <Redirect to="/dashboard" />
     }
 
     return (
@@ -35,7 +50,7 @@ const Landing = ({ isAuthenticated }) => {
                         You are in the right place. Sign Up and let us know more about you and we'll get in touch with you. We 
                         value your time and every candidate that is enrolled in summitX will hear back from us.
                     </p>
-                    <a href="#" className="btn-primary content-button">Sign Up</a>
+                    <Link to="signup-one" className="btn-primary content-button">Sign Up</Link>
                 </div>
                 <img src={image4} />
             </div>
@@ -56,11 +71,14 @@ const Landing = ({ isAuthenticated }) => {
 }
 
 Landing.propTypes = {
-    isAuthenticated: PropTypes.bool
+    auth: PropTypes.object.isRequired,
+    profile: PropTypes.object.isRequired,
+    getProfile: PropTypes.func.isRequired
 }
 
 const mapStateToProps = state => ({
-    isAuthenticated: state.auth.isAuthenticated
+    auth: state.auth,
+    profile: state.profile
 });
 
-export default connect(mapStateToProps)(Landing);
+export default connect(mapStateToProps, { getProfile } )(Landing);

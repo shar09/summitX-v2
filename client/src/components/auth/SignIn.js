@@ -1,10 +1,16 @@
-import React, { Fragment, useState } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import React, { Fragment, useState, useEffect } from 'react';
+import { Link} from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { signIn } from '../../actions/auth';
 
 const SignIn = ({ signInModalState, setSignInModalState, signIn, errors, isAuthenticated }) => {
+    useEffect(() => {
+        if (isAuthenticated) {
+            setSignInModalState(false);
+        }
+    }, [isAuthenticated]);
+
     const [formData, setFormData] = useState({
         email: '',
         password: ''
@@ -25,10 +31,6 @@ const SignIn = ({ signInModalState, setSignInModalState, signIn, errors, isAuthe
         e.preventDefault();
 
         signIn(email, password);
-    }
-
-    if(isAuthenticated) {
-        setSignInModalState(false);
     }
 
     return (
@@ -76,7 +78,9 @@ const SignIn = ({ signInModalState, setSignInModalState, signIn, errors, isAuthe
                     <small>Forgot password?</small>
                 </section>
                 <button type="submit" className="btn-primary">Sign In</button>
-                <small>Don't have an account? <span className="sign-in-link">Sign Up</span></small>
+                <small>Don't have an account? <Link to="signup-one" className="sign-in-link" onClick={() => setSignInModalState(false)}>
+                    Sign Up </Link>
+                </small>
             </form>
         </div>
         ) : <Fragment />

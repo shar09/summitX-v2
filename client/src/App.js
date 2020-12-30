@@ -5,7 +5,9 @@ import Navbar from './components/layout/Navbar';
 import Landing from './components/layout/Landing';
 import SignIn from './components/auth/SignIn';
 import Dashboard from './components/dashboard/Dashboard';
-
+import SignUpOne from './components/auth/signup/SignUpOne';
+import SignUpTwo from './components/auth/signup/SignUpTwo';
+import SignUpThree from './components/auth/signup/SignUpThree';
 // Redux
 import { Provider } from 'react-redux';
 import store from './store';
@@ -41,7 +43,12 @@ const App = () => {
                     />
                     <Switch>
                         <Route exact path="/" component={Landing} />
+                        <Route exact path="/signup-one"> 
+                            <SignUpOne setSignInModalState={setSignInModalState} />
+                        </Route>
                         <PrivateRoute exact path="/dashboard" component={Dashboard} />
+                        <PrivateRoute exact path="/signup-two" component={SignUpTwo} />
+                        <PrivateRoute exact path="/signup-three" component={SignUpThree} />
                     </Switch>
                 </Fragment>
             </Router>

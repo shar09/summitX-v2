@@ -10,9 +10,9 @@ const Navbar = ({ setSignInModalState, isAuthenticated, signOut }) => {
     const guestLinks = (
         <ul className="nav-links">
             <li className="nav-item">
-                <a href="#" className={!menu || window.innerWidth > 768 ? "btn-primary" : "nav-item-default"}
+                <Link to="signup-one" className={!menu || window.innerWidth > 768 ? "btn-primary" : "nav-item-default"}
                     onClick={() => toggleMenu(!menu)}
-                >Job Seekers</a>
+                >Job Seekers</Link>
             </li>
             <li className="nav-item">
                 <a href="#" className={!menu || window.innerWidth > 768 ? "btn-primary" : "nav-item-default"}
@@ -49,7 +49,7 @@ const Navbar = ({ setSignInModalState, isAuthenticated, signOut }) => {
     
     return (
         <div className="navbar">
-            <a href="#" className="company-logo">summit<span>X</span></a>
+            <Link to="/" className="company-logo">summit<span>X</span></Link>
             <button className="menu-icon"
                 onClick={() => toggleMenu(!menu)}
             >
