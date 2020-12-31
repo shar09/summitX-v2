@@ -10,21 +10,7 @@ import image3 from '../../images/img-3.jpg';
 import image4 from '../../images/img-4.jpg';
 
 const Landing = ({ getProfile, auth: { isAuthenticated },  profile: { profile } }) => { 
-
-    useEffect( () => {
-        getProfile();
-        console.log("landing");
-    }, []);
-
-    if(isAuthenticated && !profile) {
-        return <Redirect to="/signup-two" />
-    }
-
-    if(isAuthenticated && profile && !profile.resume) {
-        return <Redirect to="/signup-three" />
-    }
-
-    if(isAuthenticated && profile && profile.resume) {
+    if(isAuthenticated) {
         return <Redirect to="/dashboard" />
     }
 

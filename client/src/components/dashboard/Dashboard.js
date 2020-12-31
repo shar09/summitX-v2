@@ -7,19 +7,13 @@ import { getProfile } from '../../actions/profile';
 const Dashboard = ({ auth: { isAuthenticated, loading }, profile: { profile }, getProfile }) => {
     useEffect( () => {
         getProfile();
-        console.log("dashboard")
-    }, []);
+    }, [getProfile]);
 
-    if(!loading && !isAuthenticated) {
-        return <Redirect to="/" />
-    }
-
-    if(isAuthenticated && !profile) {
-        console.log("entered-2");
+    if(!profile) {
         return <Redirect to="/signup-two" />
     }
 
-    if(isAuthenticated && profile && !profile.resume) {
+    if(profile && !profile.resume) {
         return <Redirect to="/signup-three" />
     }
 

@@ -10,11 +10,6 @@ const SignUpThree = ({ getProfile, uploadResume,
         profile: { profile }
     }) => {
         
-    useEffect( () => {
-        console.log("3");
-        getProfile();
-    }, []);
-
     const [resume, uploadFile] = useState(null);
 
     const handleChange = e => {
@@ -28,14 +23,6 @@ const SignUpThree = ({ getProfile, uploadResume,
         formData.append('resume', resume);
 
         uploadResume(formData);
-    }
-
-    if(isAuthenticated && !profile) {
-        return <Redirect to="/signup-two" />
-    }
-
-    if(isAuthenticated && profile && profile.resume) {
-        return <Redirect to="/dashboard" />
     }
 
     return (

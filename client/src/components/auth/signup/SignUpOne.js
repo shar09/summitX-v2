@@ -12,11 +12,6 @@ const SignUpOne = ({ setSignInModalState, createAccount, setError, resetErrors, 
         profile: { profile }
     }) => {
 
-    useEffect( () => {
-        console.log("1");
-        getProfile();
-    }, []);
-        
     const [formData, setFormData] = useState({
         firstname: '',
         lastname: '',
@@ -45,16 +40,8 @@ const SignUpOne = ({ setSignInModalState, createAccount, setError, resetErrors, 
         }
     }
 
-    if(isAuthenticated && !profile) {
-        return <Redirect to="/signup-two" /> 
-    }
-
-    if(isAuthenticated && profile && !profile.resume) {
-        return <Redirect to="/signup-three" /> 
-    }
-
-    if(isAuthenticated && profile && profile.resume) {
-        return <Redirect to="/dashboard" /> 
+    if(isAuthenticated) {
+        return <Redirect to="/dashboard" />
     }
 
     return (

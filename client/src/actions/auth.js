@@ -39,6 +39,7 @@ export const signIn = (email, password) => async dispatch => {
         });
 
         dispatch(loadUser());
+
     } catch (err) {
         const errors = err.response.data.errors;
 

@@ -7,11 +7,6 @@ import { createProfile } from '../../../actions/profile';
 import { getProfile } from '../../../actions/profile';
 
 const SignUpTwo = ({ createProfile, getProfile, auth: { isAuthenticated }, profile: { profile } }) => {
-    useEffect( () => {
-        console.log("2");
-        getProfile();
-    }, []);
-
     const [formData, setFormData] = useState({
         position: '',
         summary: '',
@@ -35,15 +30,7 @@ const SignUpTwo = ({ createProfile, getProfile, auth: { isAuthenticated }, profi
         createProfile(formData); 
 
     }
-
-    if(isAuthenticated && profile && !profile.resume) {
-        return <Redirect to="/signup-three" />
-    }
-
-    if(isAuthenticated && profile && profile.resume) {
-        return <Redirect to="/dashboard" />
-    }
-
+    
     return (
         <section className="landing-forms">
             <div className="side-image">
