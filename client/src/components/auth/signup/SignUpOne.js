@@ -5,11 +5,11 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { createAccount } from '../../../actions/auth';
 import { setError, resetErrors } from '../../../actions/error';
-import { getProfile } from '../../../actions/profile';
+import Spinner from '../../layout/Spinner';
 
-const SignUpOne = ({ setSignInModalState, createAccount, setError, resetErrors, errors, getProfile,
-        auth: { isAuthenticated }, 
-        profile: { profile }
+const SignUpOne = ({ setSignInModalState, createAccount, setError, resetErrors, 
+        errors,
+        auth: { isAuthenticated, loading, userLoaded, user }
     }) => {
 
     const [formData, setFormData] = useState({
@@ -40,8 +40,23 @@ const SignUpOne = ({ setSignInModalState, createAccount, setError, resetErrors, 
         }
     }
 
-    if(isAuthenticated) {
-        return <Redirect to="/dashboard" />
+    if (loading) {
+        return <Spinner />
+    }
+    else {
+        if(userLoaded) {
+            if(isAuthenticated && !user.isProfile) {
+                return <Redirect to="/signup-two" />
+            }
+
+            if(isAuthenticated && user.isProfile && !user.isResume) {
+                return <Redirect to="/signup-three" />
+            }
+
+            if(isAuthenticated && user.isProfile && user.isResume) {
+                return <Redirect to="/dashboard" />
+            }    
+        }
     }
 
     return (
@@ -139,16 +154,13 @@ SignUpOne.propTypes = {
     createAccount: PropTypes.func.isRequired,
     setError: PropTypes.func.isRequired,
     resetErrors: PropTypes.func.isRequired,
-    getProfile: PropTypes.func.isRequired,
     errors: PropTypes.array.isRequired,
-    auth: PropTypes.object.isRequired,
-    profile: PropTypes.object.isRequired
+    auth: PropTypes.object.isRequired
 }
 
 const mapStateToProps = state => ({
     errors: state.errors,
-    auth: state.auth,
-    profile: state.profile
+    auth: state.auth
 })
 
-export default connect(mapStateToProps, { createAccount, setError, resetErrors, getProfile })(SignUpOne);
+export default connect(mapStateToProps, { createAccount, setError, resetErrors })(SignUpOne);

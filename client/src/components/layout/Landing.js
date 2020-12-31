@@ -2,18 +2,35 @@ import React, { useEffect } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getProfile } from '../../actions/profile';
+import Spinner from './Spinner';
 
 // Images
 import image1 from '../../images/img-1.jpeg';
 import image3 from '../../images/img-3.jpg';
 import image4 from '../../images/img-4.jpg';
 
-const Landing = ({ getProfile, auth: { isAuthenticated },  profile: { profile } }) => { 
-    if(isAuthenticated) {
-        return <Redirect to="/dashboard" />
-    }
+const Landing = ({ auth: { isAuthenticated, loading, userLoaded, user}
+    }) => { 
 
+    if (loading) {
+        return <Spinner />
+    }
+    else {
+        if(userLoaded) {
+            if(isAuthenticated && !user.isProfile) {
+                return <Redirect to="/signup-two" />
+            }
+
+            if(isAuthenticated && user.isProfile && !user.isResume) {
+                return <Redirect to="/signup-three" />
+            }
+
+            if(isAuthenticated && user.isProfile && user.isResume) {
+                return <Redirect to="/dashboard" />
+            }    
+        }
+    }
+    
     return (
         <div className="landing">
             <div className="home-grid">
@@ -57,14 +74,11 @@ const Landing = ({ getProfile, auth: { isAuthenticated },  profile: { profile } 
 }
 
 Landing.propTypes = {
-    auth: PropTypes.object.isRequired,
-    profile: PropTypes.object.isRequired,
-    getProfile: PropTypes.func.isRequired
+    auth: PropTypes.object.isRequired
 }
 
 const mapStateToProps = state => ({
-    auth: state.auth,
-    profile: state.profile
+    auth: state.auth
 });
 
-export default connect(mapStateToProps, { getProfile } )(Landing);
+export default connect(mapStateToProps)(Landing);

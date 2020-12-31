@@ -4,9 +4,13 @@ import signupimg from '../../../images/signup-img.jpg';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { createProfile } from '../../../actions/profile';
-import { getProfile } from '../../../actions/profile';
+import Spinner from '../../layout/Spinner';
 
-const SignUpTwo = ({ createProfile, getProfile, auth: { isAuthenticated }, profile: { profile } }) => {
+const SignUpTwo = ({ createProfile, auth: { isAuthenticated, loading, userLoaded, user } }) => {
+    useEffect( () => {
+        console.log("useffect kicked in yo")
+    }, [user.isProfile]);
+
     const [formData, setFormData] = useState({
         position: '',
         summary: '',
@@ -31,6 +35,21 @@ const SignUpTwo = ({ createProfile, getProfile, auth: { isAuthenticated }, profi
 
     }
     
+    if (loading) {
+        return <Spinner />
+    }
+    else {
+        if(userLoaded) {
+            if(isAuthenticated && user.isProfile && !user.isResume) {
+                return <Redirect to="/signup-three" />
+            }
+
+            if(isAuthenticated && user.isProfile && user.isResume) {
+                return <Redirect to="/dashboard" />
+            }    
+        }
+    }
+
     return (
         <section className="landing-forms">
             <div className="side-image">
@@ -96,9 +115,7 @@ const SignUpTwo = ({ createProfile, getProfile, auth: { isAuthenticated }, profi
 
 SignUpTwo.propTypes = {
     auth: PropTypes.object.isRequired,
-    profile: PropTypes.object.isRequired,
-    createProfile: PropTypes.func.isRequired,
-    getProfile: PropTypes.func.isRequired
+    createProfile: PropTypes.func.isRequired
 }
 
 const mapStateToProps = state => ({
@@ -106,4 +123,4 @@ const mapStateToProps = state => ({
     profile: state.profile
 }); 
 
-export default connect(mapStateToProps, { createProfile, getProfile })(SignUpTwo);
+export default connect(mapStateToProps, { createProfile })(SignUpTwo);

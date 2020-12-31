@@ -3,18 +3,26 @@ import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getProfile } from '../../actions/profile';
+import Spinner from '../layout/Spinner';
 
-const Dashboard = ({ auth: { isAuthenticated, loading }, profile: { profile }, getProfile }) => {
+const Dashboard = ({ auth: { user }, profile: { profile, profileLoading }, getProfile }) => {
     useEffect( () => {
+        console.log("dashboard");
         getProfile();
     }, [getProfile]);
 
-    if(!profile) {
-        return <Redirect to="/signup-two" />
+    if(profileLoading) {    
+        console.log("hello");
+        return <Spinner />
     }
+    else {    
+        if(!user.isProfile) {
+            return <Redirect to="/signup-two" />
+        }
 
-    if(profile && !profile.resume) {
-        return <Redirect to="/signup-three" />
+        if(user.isProfile && !user.isResume) {
+            return <Redirect to="/signup-three" />
+        }
     }
 
     return (

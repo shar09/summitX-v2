@@ -5,6 +5,7 @@ const aws = require('aws-sdk');
 const multerS3 = require('multer-s3');
 const multer = require('multer');
 const auth = require('../../middleware/auth');
+const User = require('../../models/User');
 const Profile = require('../../models/Profile');
 
 const s3 = new aws.S3({
@@ -82,13 +83,13 @@ router.post("/", auth, [
         state,
         city,
         summary,
-        linkedin
+        linkedin,
     }
 
     try {
         let profile = await Profile.findOne({ user: req.user.id });
         if(profile) {
-            profile = await profile.findOneandUpdate(
+            profile = await Profile.findOneAndUpdate(
                 { user: req.user.id },
                 { $set: profileFields },
                 { new: true }
@@ -97,7 +98,14 @@ router.post("/", auth, [
         }
         
         profile = new Profile(profileFields);
+
+        const userModel = await User.findById(req.user.id);
+
+        userModel.isProfile = true;
+
         await profile.save();
+        await userModel.save();
+        
         res.json(profile);
 
     } catch (err) {
@@ -137,6 +145,10 @@ router.post('/resume', auth, ( req, res ) => { resumeUpload( req, res, async ( e
                 profile.resume = resume;
 
                 await profile.save();
+                
+                const userModel = await User.findById(req.user.id);
+                userModel.isResume = true;
+                await userModel.save();
 
                 return res.json(profile);
             }

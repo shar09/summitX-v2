@@ -5,6 +5,7 @@ import {
     PROFILE_ERROR,
     UPLOAD_RESUME
 } from './types';
+import { loadUser } from './auth';
 
 // Create or Update Profile
 export const createProfile = formData => async dispatch => {
@@ -15,6 +16,8 @@ export const createProfile = formData => async dispatch => {
             type: UPDATE_PROFILE,
             payload: res.data
         });
+
+        dispatch(loadUser());
     } catch (err) {
         const errors = err.response.data.errors;
         
@@ -50,6 +53,8 @@ export const uploadResume = resume => async dispatch => {
             type: UPLOAD_RESUME,
             payload: res.data
         });
+
+        dispatch(loadUser());
     }
     catch (err) {
         console.log(err.response.data.errors);

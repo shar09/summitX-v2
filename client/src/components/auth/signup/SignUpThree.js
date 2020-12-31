@@ -3,11 +3,11 @@ import signupimg from '../../../images/signup-img.jpg';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getProfile, uploadResume } from '../../../actions/profile';
+import { uploadResume } from '../../../actions/profile';
+import Spinner from '../../layout/Spinner';
 
-const SignUpThree = ({ getProfile, uploadResume, 
-        auth: { isAuthenticated },  
-        profile: { profile }
+const SignUpThree = ({ uploadResume, 
+        auth: { isAuthenticated, loading, userLoaded, user },  
     }) => {
         
     const [resume, uploadFile] = useState(null);
@@ -23,6 +23,21 @@ const SignUpThree = ({ getProfile, uploadResume,
         formData.append('resume', resume);
 
         uploadResume(formData);
+    }
+
+    if (loading) {
+        return <Spinner />
+    }
+    else {
+        if(userLoaded) {
+            if(isAuthenticated && !user.isProfile) {
+                return <Redirect to="/signup-two" />
+            }
+
+            if(isAuthenticated && user.isProfile && user.isResume) {
+                return <Redirect to="/dashboard" />
+            }    
+        }
     }
 
     return (
@@ -47,15 +62,12 @@ const SignUpThree = ({ getProfile, uploadResume,
 }
 
 SignUpThree.propTypes = {
-    getProfile: PropTypes.func.isRequired,
     uploadResume: PropTypes.func.isRequired,
-    auth: PropTypes.object.isRequired,
-    profile: PropTypes.object.isRequired
+    auth: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-    auth: state.auth,
-    profile: state.profile
+    auth: state.auth
 });
 
-export default connect(mapStateToProps, { getProfile, uploadResume })(SignUpThree);
+export default connect(mapStateToProps, { uploadResume })(SignUpThree);

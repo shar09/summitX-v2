@@ -10,6 +10,7 @@ const initialState = {
     isAuthenticated: false,
     user: null,
     loading: true,
+    userLoaded: false
 }
 
 function authReducer(state=initialState, action) {
@@ -21,7 +22,8 @@ function authReducer(state=initialState, action) {
                 ...state,
                 isAuthenticated: true,
                 user: payload,
-                loading: false
+                loading: false,
+                userLoaded: true
             }
         case SIGNIN: 
         case CREATE_ACCOUNT:
@@ -38,7 +40,8 @@ function authReducer(state=initialState, action) {
                 loading: false,
                 isAuthenticated: false,
                 token: null,
-                user: null
+                user: null,
+                userLoaded: false
             }    
         default:
             return state;    

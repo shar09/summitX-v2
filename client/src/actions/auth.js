@@ -42,7 +42,7 @@ export const signIn = (email, password) => async dispatch => {
 
     } catch (err) {
         const errors = err.response.data.errors;
-
+    
         if(errors) {
             errors.forEach(error => dispatch(setError(error.msg, error.param)));
         }

@@ -27,6 +27,14 @@ const UserSchema = new mongoose.Schema({
     },
     expireToken: {
         type: Date
+    },
+    isProfile: {
+        type: Boolean,
+        default: false
+    },
+    isResume: {
+        type: Boolean,
+        default: false
     }
 });
 

@@ -8,7 +8,7 @@ import {
 const initialState = {
     profile: null,
     error: {},
-    loading: true
+    profileLoading: true
 }
 
 function profileReducer(state=initialState, action) {
@@ -20,20 +20,20 @@ function profileReducer(state=initialState, action) {
             return {
                 ...state,
                 profile: payload,
-                loading: false
+                profileLoading: false
             };
         case PROFILE_ERROR:
             return {
                 ...state,
                 profile: null,
-                loading: false,
+                profileLoading: false,
                 error: payload
             };
         case UPLOAD_RESUME: 
             return {
                 ...state,
                 profile: payload,
-                loading: false
+                profileLoading: false
             }     
         default:
             return state;        
