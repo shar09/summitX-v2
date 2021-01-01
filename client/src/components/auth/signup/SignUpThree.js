@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import signupimg from '../../../images/signup-img.jpg';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';

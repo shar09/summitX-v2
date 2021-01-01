@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -9,8 +9,7 @@ import image1 from '../../images/img-1.jpeg';
 import image3 from '../../images/img-3.jpg';
 import image4 from '../../images/img-4.jpg';
 
-const Landing = ({ auth: { isAuthenticated, loading, userLoaded, user}
-    }) => { 
+const Landing = ({ auth: { isAuthenticated, loading, userLoaded, user } }) => { 
 
     if (loading) {
         return <Spinner />

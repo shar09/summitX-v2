@@ -10,14 +10,14 @@ const Navbar = ({ setSignInModalState, isAuthenticated, signOut }) => {
     const guestLinks = (
         <ul className="nav-links">
             <li className="nav-item">
-                <Link to="signup-one" className={!menu || window.innerWidth > 768 ? "btn-primary" : "nav-item-default"}
+                <Link to="/signup-one" className={!menu || window.innerWidth > 768 ? "btn-primary" : "nav-item-default"}
                     onClick={() => toggleMenu(!menu)}
                 >Job Seekers</Link>
             </li>
             <li className="nav-item">
-                <a href="#" className={!menu || window.innerWidth > 768 ? "btn-primary" : "nav-item-default"}
+                <Link to="/contact" className={!menu || window.innerWidth > 768 ? "btn-primary" : "nav-item-default"}
                     onClick={() => toggleMenu(!menu)}
-                >Employers</a>
+                >Employers</Link>
             </li>
             <li className="nav-item">
                 <span className="nav-item-default" 
@@ -30,9 +30,9 @@ const Navbar = ({ setSignInModalState, isAuthenticated, signOut }) => {
     const authLinks = (
         <ul className="nav-links">
             <li className="nav-item">
-                <a href="#" className={!menu || window.innerWidth > 768 ? "btn-primary" : "nav-item-default"}
+                <Link to="/dashboard" className={!menu || window.innerWidth > 768 ? "btn-primary" : "nav-item-default"}
                     onClick={() => toggleMenu(!menu)}
-                >Dashboard</a>
+                >Dashboard</Link>
             </li>
             <li className="nav-item">
                 <a href="#" className="nav-item-default"
