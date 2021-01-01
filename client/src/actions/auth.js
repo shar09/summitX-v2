@@ -4,7 +4,8 @@ import { SIGNIN,
     SIGNOUT,
     USER_LOADED,
     AUTH_ERROR,
-    CREATE_ACCOUNT
+    CREATE_ACCOUNT,
+    CLEAR_PROFILE
 } from './types'; 
 import { resetErrors } from './error';
 
@@ -72,6 +73,12 @@ export const createAccount = (formData) => async dispatch => {
 }
 
 // Signout
-export const signOut = () => ({
-    type: SIGNOUT
-});
+export const signOut = () => async dispatch => {
+    dispatch({
+        type: SIGNOUT
+    });
+
+    dispatch({
+        type: CLEAR_PROFILE
+    });
+}
