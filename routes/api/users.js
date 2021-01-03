@@ -3,13 +3,14 @@ const router = express.Router();
 const { check, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const auth = require('../../middleware/auth');
 const User = require('../../models/User');
 
 // @route  POST api/users
 // @desc   Register User
 // @access Public
 
-router.post("/", 
+router.post('/', 
 [
     check('firstname', 'first name is required').not().isEmpty(),
     check('lastname', 'last name is required').not().isEmpty(),
@@ -31,8 +32,8 @@ async (req, res) => {
         }
 
         user = new User({
-            firstname,
-            lastname,
+            firstname: firstname.trim(),
+            lastname: lastname.trim(),
             email,
             password
         });
@@ -65,6 +66,38 @@ async (req, res) => {
         console.log(err.message);
         res.status(500).send('Server Error');
     }    
+});
+
+// @route PUT api/users
+// @desc Edit Name (Experimental)
+// @acceess Private
+router.put('/', auth, [
+    check('firstname', 'first name is required').not().isEmpty(),
+    check('lastname', 'last name is required').not().isEmpty(),
+], async (req, res) => {
+    const errors = validationResult(req);
+    if(!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+    const { firstname, lastname } = req.body;
+
+    try {
+        let user = await User.findById(req.user.id);
+
+        if(user) {
+            user.firstname = firstname;
+            user.lastname = lastname;
+            await user.save();
+            return res.json(user);
+        }
+        else {
+            return res.status(400).json({ errors: [{ msg: "User not found "} ] });
+        }
+
+    } catch (err) {
+        console.log(err.message);
+        res.status(500).send('Server Error');
+    }
 });
 
 module.exports = router;

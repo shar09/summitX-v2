@@ -21,7 +21,7 @@ let transporter = nodemailer.createTransport(sgTransport(options));
 // @desc   to load user on register/login
 // @access Private
 
-router.get("/", auth, async (req, res) => {
+router.get('/', auth, async (req, res) => {
     try {
         const user = await User.findById(req.user.id).select('-password');
         res.json(user);
@@ -36,7 +36,7 @@ router.get("/", auth, async (req, res) => {
 // @desc   Login User
 // @access Public
 
-router.post("/", [
+router.post('/', [
     check('email','Enter a valid email').isEmail(),
     check('password', 'Password is required').exists(),
 ],

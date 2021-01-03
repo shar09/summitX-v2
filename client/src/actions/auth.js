@@ -72,6 +72,21 @@ export const createAccount = (formData) => async dispatch => {
     }
 }
 
+// Edit Name (Experimental)
+export const editName = (firstname, lastname) => async dispatch => {
+    
+    try {
+        const res = await api.put('/users', { firstname, lastname });
+
+        dispatch(loadUser());
+
+    }  catch (err) {
+        dispatch({
+            type: AUTH_ERROR
+        });
+    }
+}
+
 // Signout
 export const signOut = () => async dispatch => {
     dispatch({

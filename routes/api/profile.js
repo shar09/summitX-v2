@@ -79,21 +79,27 @@ router.post("/", auth, [
 
     const profileFields = {
         user: req.user.id,
-        position,
-        state,
-        city,
-        summary,
+        position: position.trim(),
+        state: state.trim(),
+        city: city.trim(),
+        summary: summary.trim(),
         linkedin,
     }
 
     try {
         let profile = await Profile.findOne({ user: req.user.id });
         if(profile) {
-            profile = await Profile.findOneAndUpdate(
+            await Profile.findOneAndUpdate(
                 { user: req.user.id },
                 { $set: profileFields },
                 { new: true }
             )
+
+            profile = await Profile.findOne({ user : req.user.id }).populate(
+                'user',
+                ['firstname', 'lastname']
+            ); 
+            
             return res.json(profile);
         }
         
@@ -105,8 +111,13 @@ router.post("/", auth, [
 
         await profile.save();
         await userModel.save();
+
+        profile = await Profile.findOne({ user : req.user.id }).populate(
+            'user',
+            ['firstname', 'lastname']
+        ); 
         
-        res.json(profile);
+        return res.json(profile);
 
     } catch (err) {
         console.log(err.message);
@@ -179,7 +190,7 @@ router.post('/skills', auth, check('text', 'Skill is required').not().isEmpty(),
         }
         
         const skill = { 
-            text: req.body.text
+            text: req.body.text.trim()
         }
         profile.skills.push(skill);
 
@@ -218,7 +229,6 @@ router.delete('/skills/:id', auth, async (req, res) => {
     }
 });
 
-
 // @route  POST api/profile/experience
 // @desc   Add Experience
 // @access private
@@ -245,9 +255,9 @@ router.post('/experience', auth, [
         }
 
         let experience = {
-            company,
-            title,
-            description,
+            company: company.trim(),
+            title: title.trim(),
+            description: description.trim(),
             from,
             to,
         }
@@ -289,9 +299,9 @@ router.put('/experience/:id', auth, [
         }
 
         let experience = {
-            company,
-            title,
-            description,
+            company: company.trim(),
+            title: title.trim(),
+            description: description.trim(),
             from,
             to
         }
@@ -366,12 +376,12 @@ router.post('/education', auth, [
         }
 
         let education = {
-            school,
+            school: school.trim(),
             degree,
             fieldofstudy,
-            description,
+            description: description.trim(),
             from,
-            to,
+            to
         }
 
         profile.education.push(education);
@@ -411,10 +421,10 @@ router.put('/education/:id', auth, [
         }
 
         let education = {
-            school,
+            school: school.trim(),
             degree,
             fieldofstudy,
-            description,
+            description: description.trim(),
             from,
             to
         }

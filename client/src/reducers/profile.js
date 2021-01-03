@@ -1,4 +1,5 @@
 import {
+    CREATE_PROFILE,
     UPDATE_PROFILE,
     GET_PROFILE,
     PROFILE_ERROR,
@@ -17,6 +18,17 @@ function profileReducer(state=initialState, action) {
 
     switch(type) {
         case GET_PROFILE:
+            return {
+                ...state,
+                profile: payload,
+                profileLoading: false
+            };
+        case CREATE_PROFILE:    
+            return {
+                ...state,
+                profile: payload,
+                profileLoading: false
+            };    
         case UPDATE_PROFILE:    
             return {
                 ...state,
@@ -40,7 +52,7 @@ function profileReducer(state=initialState, action) {
             return {
                 ...state,
                 profile: null,
-                profileLoading: false,
+                profileLoading: true,
                 error: null
             }        
         default:

@@ -1,5 +1,6 @@
 import api from '../utils/api';
 import {
+    CREATE_PROFILE,
     UPDATE_PROFILE,
     GET_PROFILE,
     PROFILE_ERROR,
@@ -7,8 +8,29 @@ import {
 } from './types';
 import { loadUser } from './auth';
 
-// Create or Update Profile
+// Create Profile
 export const createProfile = formData => async dispatch => {
+    try {
+        const res = await api.post('/profile', formData);
+
+        dispatch({
+            type: CREATE_PROFILE,
+            payload: res.data
+        });
+
+        dispatch(loadUser());
+    } catch (err) {
+        const errors = err.response.data.errors;
+        
+        dispatch({
+            type: PROFILE_ERROR,
+            payload: { msg: err.response.statusText, status: err.response.status }
+        });
+    }
+}
+
+// Update Profile
+export const updateProfile = formData => async dispatch => {
     try {
         const res = await api.post('/profile', formData);
 
@@ -16,8 +38,7 @@ export const createProfile = formData => async dispatch => {
             type: UPDATE_PROFILE,
             payload: res.data
         });
-
-        dispatch(loadUser());
+        
     } catch (err) {
         const errors = err.response.data.errors;
         

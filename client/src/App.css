@@ -1,8 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans+Condensed:wght@300&family=Open+Sans&display=swap');
 
 :root {
   --primary-color: #0071e0;
   --primary-hover: #65b0fa;
+  --gray-color: #626f7f;
   --danger-color: #dc3545;
 }
 
@@ -348,7 +349,7 @@ input[type="file"]::-webkit-file-upload-button {
   margin: auto;
   overflow: hidden;
   padding: 0 2rem;
-  margin-top: 6rem;
+  margin-top: 4rem;
   margin-bottom: 3rem;
 }
 
@@ -393,7 +394,11 @@ input[type="file"]::-webkit-file-upload-button {
   color: var(--gray-color);
 }
 
-.profile-position > span> i {
+.profile-icons {
+  margin-left: 8px;
+}
+
+.profile-position > span> a>i {
   color: #686666;
   margin-left: 10px;
 }
@@ -417,6 +422,38 @@ input[type="file"]::-webkit-file-upload-button {
   cursor: pointer;   
 }
 
+/* ------Profile Animation-------- */
+.fadeIn {
+  animation: fadeInAnimation 300ms ease-in;
+}
+
+@keyframes fadeInAnimation {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* .fadeOut {
+  animation: fadeOutAnimation 1000ms ease-in;
+}
+
+@keyframes fadeOutAnimation {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+} */
+
+/* .fadeOut{
+  opacity:0;
+  visibility: hidden;
+  transition: width 0.5s 0.5s, height 0.5s 0.5s, opacity 0.5s;
+
+}
+.fadeIn{
+  opacity:1;
+  visibility: visible;
+  transition: width 0.5s, height 0.5s, opacity 0.5s 0.5s;
+} */
+
+
 /* ------Experience-------- */
 .experience-new {
   display: flex;
@@ -427,7 +464,6 @@ input[type="file"]::-webkit-file-upload-button {
   color: var(--primary-hover);
   cursor: pointer;
 }
-
 
 .experience-header {
   display: flex;
@@ -484,6 +520,8 @@ input[type="file"]::-webkit-file-upload-button {
   display: block;
   width: 100%;
   padding: 0.3rem;
+  border: 1px solid #aaaaaa;
+  border-radius: 2px;
 }
 
 .add-exp-button {
@@ -504,6 +542,7 @@ input[type="file"]::-webkit-file-upload-button {
 .exp-cancel {
   font-size: 14px;
   color: var(--gray-color);
+  margin: 0 0.1rem;
   text-decoration: none;
 }
 
