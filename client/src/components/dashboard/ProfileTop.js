@@ -170,7 +170,7 @@ const ProfileTop = ({ profile, editName, updateProfile }) => {
 
 ProfileTop.propTypes = {
     editName: PropTypes.func.isRequired,
-    createProfile: PropTypes.func.isRequired
+    updateProfile: PropTypes.func.isRequired
 }
 
 export default connect(null, { editName, updateProfile })(ProfileTop);

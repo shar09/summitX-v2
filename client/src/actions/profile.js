@@ -20,7 +20,7 @@ export const createProfile = formData => async dispatch => {
 
         dispatch(loadUser());
     } catch (err) {
-        const errors = err.response.data.errors;
+        // const errors = err.response.data.errors;
         
         dispatch({
             type: PROFILE_ERROR,
@@ -40,7 +40,7 @@ export const updateProfile = formData => async dispatch => {
         });
         
     } catch (err) {
-        const errors = err.response.data.errors;
+        // const errors = err.response.data.errors;
         
         dispatch({
             type: PROFILE_ERROR,
@@ -79,7 +79,12 @@ export const uploadResume = resume => async dispatch => {
         dispatch(loadUser());
     }
     catch (err) {
-        console.log(err.response.data.errors);
+        // const errors = err.response.data.errors;
+
+        dispatch({
+            type: PROFILE_ERROR,
+            payload: { msg: err.response.statusText, status: err.response.status }
+          });
     }
 }
 
@@ -91,10 +96,31 @@ export const addExperience = newExp => async dispatch => {
         dispatch({
             type: UPDATE_PROFILE,
             payload: res.data
-        })
+        });
         
     } catch (err) {
-        const errors = err.response.data.errors;
+        // const errors = err.response.data.errors;
+    
+        dispatch({
+          type: PROFILE_ERROR,
+          payload: { msg: err.response.statusText, status: err.response.status }
+        });
+    }
+}
+
+// Edit Experience
+export const editExperience = (id, editExp) => async dispatch => {
+    console.log("edit");
+    try {
+        const res = await api.put(`/profile/experience/${id}`, editExp);
+
+        dispatch({
+            type: UPDATE_PROFILE,
+            payload: res.data
+        });
+
+    } catch (err) {
+        // const errors = err.response.data.errors;
     
         dispatch({
           type: PROFILE_ERROR,

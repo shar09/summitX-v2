@@ -1,10 +1,11 @@
 import React, { Fragment, useState } from 'react';
 import formatDate from '../../utils/formatDate';
+import EditExperience from './EditExperience';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { addExperience } from '../../actions/profile';
+import { addExperience, editExperience } from '../../actions/profile';
 
-const Experience = ({ experience, addExperience }) => {    
+const Experience = ({ experience, addExperience, editExperience }) => {    
     const [addExp, setAddExp] = useState(false);
 
     const initialState = {
@@ -17,7 +18,6 @@ const Experience = ({ experience, addExperience }) => {
     }
 
     const [newExp, setNewExp] = useState(initialState);
-
     const { company, title, from, to, current, description } = newExp;
 
     const handleChange = e => {
@@ -41,9 +41,9 @@ const Experience = ({ experience, addExperience }) => {
 
     return (
         <Fragment>
-            <div class="experience-new">
-                <h3 class>Experience</h3>
-                <p onClick={ () => setAddExp(true) }><i class="fas fa-plus"></i> Add Experience </p>
+            <div className="experience-new">
+                <h3>Experience</h3>
+                <p onClick={ () => setAddExp(true) }><i className="fas fa-plus"></i> Add Experience </p>
             </div>
 
             { addExp ? (           
@@ -120,20 +120,15 @@ const Experience = ({ experience, addExperience }) => {
                         </div>
                     </form>    
                 </div> ) : (
-            
+
                 <Fragment>
                     { experience.length > 0 ? (
-                        experience.map( (exp, index) => (
-                            <div className="card" key={index}>
-                                <p className="experience-header">
-                                    <span className="company-name">{exp.company}</span>
-                                    <span className="edit-experience"> <i className="far fa-edit"></i>
-                                        <span className="icon-text"> Edit</span>
-                                    </span>
-                                </p>
-                                <p className="position">{exp.title} <span className="date">{formatDate(exp.from)} - {exp.to ? formatDate(exp.to) : 'Present'}</span> </p>
-                                <p className="experience-summary">{exp.description}</p>
-                            </div>
+                        experience.map( exp => (
+                            <EditExperience 
+                                key={exp._id} 
+                                exp={exp} 
+                                editExperience={editExperience} 
+                            />
                         ))
                     ): 
                     (
@@ -148,7 +143,8 @@ const Experience = ({ experience, addExperience }) => {
 }
 
 Experience.propTypes = {
-    addExperience: PropTypes.func.isRequired
+    addExperience: PropTypes.func.isRequired,
+    editExperience: PropTypes.func.isRequired
 }
 
-export default connect(null, { addExperience })(Experience);
+export default connect(null, { addExperience, editExperience })(Experience);
