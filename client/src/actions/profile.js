@@ -66,6 +66,7 @@ export const getProfile = () => async dispatch => {
     }
 }
 
+// Upload Resume
 export const uploadResume = resume => async dispatch => {
     try {
         const res = await api.post('/profile/resume', resume);
@@ -79,5 +80,25 @@ export const uploadResume = resume => async dispatch => {
     }
     catch (err) {
         console.log(err.response.data.errors);
+    }
+}
+
+// Add Experience
+export const addExperience = newExp => async dispatch => {
+    try {
+        const res = await api.post('/profile/experience', newExp);
+
+        dispatch({
+            type: UPDATE_PROFILE,
+            payload: res.data
+        })
+        
+    } catch (err) {
+        const errors = err.response.data.errors;
+    
+        dispatch({
+          type: PROFILE_ERROR,
+          payload: { msg: err.response.statusText, status: err.response.status }
+        });
     }
 }

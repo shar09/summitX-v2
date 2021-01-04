@@ -147,7 +147,7 @@ router.post('/resume', auth, ( req, res ) => { resumeUpload( req, res, async ( e
                     resumeLocation
                 }
                 // Save the file name into database into profile model 
-                const profile = await Profile.findOne({ user: req.user.id });
+                let profile = await Profile.findOne({ user: req.user.id });
 
                 if(!profile) {
                     return res.status(400).json({ errors: [{ msg: "Profile not found "} ] });
@@ -161,6 +161,11 @@ router.post('/resume', auth, ( req, res ) => { resumeUpload( req, res, async ( e
                 userModel.isResume = true;
                 await userModel.save();
 
+                profile = await Profile.findOne({ user : req.user.id }).populate(
+                    'user',
+                    ['firstname', 'lastname']
+                ); 
+                
                 return res.json(profile);
             }
         }   
@@ -183,7 +188,7 @@ router.post('/skills', auth, check('text', 'Skill is required').not().isEmpty(),
     }        
 
     try {
-        const profile = await Profile.findOne({ user: req.user.id });
+        let profile = await Profile.findOne({ user: req.user.id });
 
         if(!profile) {
             return res.status(400).json({ errors: [{ msg: "Profile not found "} ] });
@@ -196,6 +201,11 @@ router.post('/skills', auth, check('text', 'Skill is required').not().isEmpty(),
 
         await profile.save();
 
+        profile = await Profile.findOne({ user : req.user.id }).populate(
+            'user',
+            ['firstname', 'lastname']
+        ); 
+        
         return res.json(profile);
 
     } catch (err) {
@@ -210,7 +220,7 @@ router.post('/skills', auth, check('text', 'Skill is required').not().isEmpty(),
 
 router.delete('/skills/:id', auth, async (req, res) => {
     try {
-        const profile = await Profile.findOne({ user: req.user.id });
+        let profile = await Profile.findOne({ user: req.user.id });
 
         if(!profile) {
             return res.status(400).json({ errors: [{ msg: "Profile not found "} ] });
@@ -222,7 +232,12 @@ router.delete('/skills/:id', auth, async (req, res) => {
         
         await profile.save();
 
-        res.json(profile);
+        profile = await Profile.findOne({ user : req.user.id }).populate(
+            'user',
+            ['firstname', 'lastname']
+        ); 
+        
+        return res.json(profile);
     } catch (err) {
         console.log(err.message);
         res.status(500).send('Server Error');
@@ -266,7 +281,12 @@ router.post('/experience', auth, [
 
         await profile.save();
 
-        res.json(profile);
+        profile = await Profile.findOne({ user : req.user.id }).populate(
+            'user',
+            ['firstname', 'lastname']
+        ); 
+        
+        return res.json(profile);
     } catch (err) {
         console.log(err.message);
         res.status(500).send('Server Error');
@@ -318,7 +338,12 @@ router.put('/experience/:id', auth, [
             }
         );
 
-        res.send("Profile Experience Updated");
+        profile = await Profile.findOne({ user : req.user.id }).populate(
+            'user',
+            ['firstname', 'lastname']
+        ); 
+        
+        return res.json(profile);
     } catch (err) {
         console.log(err.message);
         res.status(500).send('Server Error');
@@ -343,6 +368,11 @@ router.delete('/experience/:id', auth, async (req, res) => {
 
         await profile.save();
 
+        profile = await Profile.findOne({ user : req.user.id }).populate(
+            'user',
+            ['firstname', 'lastname']
+        ); 
+        
         return res.json(profile);
     } catch (err) {
         console.log(err.message);
@@ -388,7 +418,12 @@ router.post('/education', auth, [
 
         await profile.save();
 
-        res.json(profile);
+        profile = await Profile.findOne({ user : req.user.id }).populate(
+            'user',
+            ['firstname', 'lastname']
+        ); 
+        
+        return res.json(profile);
     } catch (err) {
         console.log(err.message);
         res.status(500).send('Server Error');
@@ -441,7 +476,12 @@ router.put('/education/:id', auth, [
             }
         );
 
-        res.send("Profile Education Updated");
+        profile = await Profile.findOne({ user : req.user.id }).populate(
+            'user',
+            ['firstname', 'lastname']
+        ); 
+        
+        return res.json(profile);
     } catch (err) {
         console.log(err.message);
         res.status(500).send('Server Error');

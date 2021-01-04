@@ -1,8 +1,10 @@
 import React, { Fragment, useState } from 'react';
 import formatDate from '../../utils/formatDate';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { addExperience } from '../../actions/profile';
 
-const Experience = ({ experience }) => {    
+const Experience = ({ experience, addExperience }) => {    
     const [addExp, setAddExp] = useState(false);
 
     const initialState = {
@@ -31,6 +33,12 @@ const Experience = ({ experience }) => {
         });
     }
 
+    const handleSubmit = e => {
+        e.preventDefault();
+        setAddExp(false);
+        addExperience(newExp);
+    }
+
     return (
         <Fragment>
             <div class="experience-new">
@@ -39,15 +47,20 @@ const Experience = ({ experience }) => {
             </div>
 
             { addExp ? (           
-                <div className="add-experience card">
+                <div className="fadeIn add-experience card">
                     <p className="experience-header">
                         <span className="company-name">Add Experience</span>
                         <span className="">
-                            <button className="add-exp-button" type="submit">Add</button>
-                            <span onClick={ () => { setAddExp(false); setInitialState() }} className="exp-cancel">Cancel</span>
+                            <button className="add-exp-button" 
+                                type="submit"
+                                form="add-exp"
+                            >
+                                Add
+                            </button>
+                            <span onClick={() => { setAddExp(false); setInitialState(); }} className="exp-cancel">Cancel</span>
                         </span>
                     </p>
-                    <form className="exp-form">
+                    <form id="add-exp" className="exp-form" onSubmit={handleSubmit}>
                         <div className="form-group">
                             <label htmlFor="company">Company</label>
                             <input type="text" id="company" placeholder="Company" 
@@ -134,4 +147,8 @@ const Experience = ({ experience }) => {
     )
 }
 
-export default Experience;
+Experience.propTypes = {
+    addExperience: PropTypes.func.isRequired
+}
+
+export default connect(null, { addExperience })(Experience);

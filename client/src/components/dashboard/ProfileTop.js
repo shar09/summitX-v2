@@ -47,6 +47,13 @@ const ProfileTop = ({ profile, editName, updateProfile }) => {
         });
     }
 
+    const handleSubmit = e => {
+        e.preventDefault();
+        setEditMode(false); 
+        // editName(firstname, lastname);
+        updateProfile({ position, summary, city, state, linkedin}); 
+    }
+
     return (
         <Fragment>
             { !editMode ? (
@@ -80,17 +87,15 @@ const ProfileTop = ({ profile, editName, updateProfile }) => {
                     <span className="edit-experience">
                         <button className="add-exp-button" 
                             type="submit"
-                            onClick={ () => { setEditMode(false); 
-                                // editName(firstname, lastname);
-                                updateProfile({ position, summary, city, state, linkedin}); 
-                            }}
+                            form="profile-top"
+                            onClick={handleSubmit}
                         >
                             Save
                         </button>
                         <span className="exp-cancel" onClick={ () => { setEditMode(false);  setInitialState(); }}>Cancel</span>
                     </span>
                 </p>
-                <form className="exp-form">
+                <form id="profile-top" className="exp-form">
                     {/* <div className="form-group">
                         <label htmlFor="first-name">First Name</label>
                         <input type="text" id="first-name" placeholder="First Name" 
