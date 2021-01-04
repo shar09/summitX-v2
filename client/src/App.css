@@ -546,6 +546,10 @@ input[type="file"]::-webkit-file-upload-button {
   text-decoration: none;
 }
 
+.exp-cancel {
+  cursor: pointer;
+}
+
 .delete-exp-button {
   color: #ffffff;
   font-size: 14px;

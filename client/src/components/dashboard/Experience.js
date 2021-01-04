@@ -1,36 +1,135 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import formatDate from '../../utils/formatDate';
 import PropTypes from 'prop-types';
 
 const Experience = ({ experience }) => {    
+    const [addExp, setAddExp] = useState(false);
+
+    const initialState = {
+        company: '',
+        title: '',
+        from: '',
+        to: '',
+        current: false,
+        description: ''
+    }
+
+    const [newExp, setNewExp] = useState(initialState);
+
+    const { company, title, from, to, current, description } = newExp;
+
+    const handleChange = e => {
+        setNewExp({
+            ...newExp,
+            [e.target.name]: e.target.value
+        });
+    }
+
+    const setInitialState = () => {
+        setNewExp({
+            ...initialState
+        });
+    }
 
     return (
         <Fragment>
             <div class="experience-new">
                 <h3 class>Experience</h3>
-                <p><i class="fas fa-plus"></i> Add Experience </p>
+                <p onClick={ () => setAddExp(true) }><i class="fas fa-plus"></i> Add Experience </p>
             </div>
 
-            { experience.length > 0 ? (
-                experience.map( (exp, index) => (
-                    <div class="card" key={index}>
-                        <p class="experience-header">
-                            <span class="company-name">{exp.company}</span>
-                            <span class="edit-experience"> <i class="far fa-edit"></i>
-                                <span class="icon-text"> Edit</span>
-                            </span>
-                        </p>
-                        <p class="position">{exp.title} <span class="date">{formatDate(exp.from)} - {exp.to ? formatDate(exp.to) : 'Present'}</span> </p>
-                        <p class="experience-summary">{exp.description}</p>
-                    </div>
-                ))
-            ): 
-            (
-                <div>
-                    No experience to display.
-                </div>
-            )}
-    
+            { addExp ? (           
+                <div className="add-experience card">
+                    <p className="experience-header">
+                        <span className="company-name">Add Experience</span>
+                        <span className="">
+                            <button className="add-exp-button" type="submit">Add</button>
+                            <span onClick={ () => { setAddExp(false); setInitialState() }} className="exp-cancel">Cancel</span>
+                        </span>
+                    </p>
+                    <form className="exp-form">
+                        <div className="form-group">
+                            <label htmlFor="company">Company</label>
+                            <input type="text" id="company" placeholder="Company" 
+                                name="company"
+                                value={company} 
+                                onChange={handleChange}
+                                required 
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="title">Title</label>  
+                            <input type="text" id="title" placeholder="Developer, Analyst, etc" 
+                                name="title"
+                                value={title} 
+                                onChange={handleChange}
+                                required 
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="from">From Date</label>
+                            <input id="from" type="date" 
+                                name="from" 
+                                value={from}
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
+                            <div className="form-group">
+                            <input type="checkbox" id="current-job" 
+                                name="current" 
+                                value={current}
+                                onChange={() => {
+                                    setNewExp({ ...newExp, current: !current });
+                                }} 
+                            /> 
+                            <label htmlFor="current-job">Current Job</label>
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="to">To Date</label>
+                            <input id="to" type="date" 
+                                name="to" 
+                                value={to}
+                                onChange={handleChange}
+                                disabled={current}
+                                required
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="description">Description</label>  
+                            <textarea
+                                id="description" cols="30" rows="5" placeholder="What did you do? What were your accomplishments?"
+                                name="description"
+                                value={description}
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
+                    </form>    
+                </div> ) : (
+            
+                <Fragment>
+                    { experience.length > 0 ? (
+                        experience.map( (exp, index) => (
+                            <div className="card" key={index}>
+                                <p className="experience-header">
+                                    <span className="company-name">{exp.company}</span>
+                                    <span className="edit-experience"> <i className="far fa-edit"></i>
+                                        <span className="icon-text"> Edit</span>
+                                    </span>
+                                </p>
+                                <p className="position">{exp.title} <span className="date">{formatDate(exp.from)} - {exp.to ? formatDate(exp.to) : 'Present'}</span> </p>
+                                <p className="experience-summary">{exp.description}</p>
+                            </div>
+                        ))
+                    ): 
+                    (
+                        <div>
+                            No experience to display.
+                        </div>
+                    )}
+                </Fragment> )
+            }
         </Fragment> 
     )
 }
