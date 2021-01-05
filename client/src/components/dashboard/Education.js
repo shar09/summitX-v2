@@ -1,79 +1,88 @@
 import React, { Fragment, useState } from 'react';
-import EditExperience from './EditExperience';
+import EditEducation from './EditEducation';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { addExperience, editExperience, deleteExperience } from '../../actions/profile';
+import { addEducation, editEducation, deleteEducation } from '../../actions/profile';
 
-const Experience = ({ experience, addExperience, editExperience, deleteExperience }) => {    
-    const [addExp, setAddExp] = useState(false);
+const Education = ({ education, addEducation, editEducation, deleteEducation }) => {    
+    const [addEdu, setAddEdu] = useState(false);
 
     const initialState = {
-        company: '',
-        title: '',
+        school: '',
+        degree: '',
+        fieldofstudy: '',
         from: '',
         to: '',
-        current: false,
         description: ''
     }
 
-    const [newExp, setNewExp] = useState(initialState);
-    const { company, title, from, to, current, description } = newExp;
+    const [newEdu, setNewEdu] = useState(initialState);
+    const { school, degree, fieldofstudy, from, to, description } = newEdu;
 
     const handleChange = e => {
-        setNewExp({
-            ...newExp,
+        setNewEdu({
+            ...newEdu,
             [e.target.name]: e.target.value
         });
     }
 
     const setInitialState = () => {
-        setNewExp({
+        setNewEdu({
             ...initialState
         });
     }
 
     const handleSubmit = e => {
         e.preventDefault();
-        setAddExp(false);
-        addExperience(newExp);
+        setAddEdu(false);
+        addEducation(newEdu);
     }
 
     return (
         <Fragment>
             <div className="experience-new">
-                <h3>Experience</h3>
-                <p onClick={ () => setAddExp(true) }><i className="fas fa-plus"></i> Add Experience </p>
+                <h3>Education</h3>
+                <p onClick={ () => setAddEdu(true) }><i className="fas fa-plus"></i> Add Education </p>
             </div>
 
-            { addExp ? (           
+            { addEdu ? (           
                 <div className="fadeIn add-experience card">
                     <p className="experience-header">
-                        <span className="company-name">Add Experience</span>
+                        <span className="company-name">Add Education</span>
                         <span className="">
                             <button className="add-exp-button" 
                                 type="submit"
-                                form="add-exp"
+                                form="add-edu"
                             >
                                 Add
                             </button>
-                            <span onClick={() => { setAddExp(false); setInitialState(); }} className="exp-cancel">Cancel</span>
+                            <span onClick={() => { setAddEdu(false); setInitialState(); }} className="exp-cancel">Cancel</span>
                         </span>
                     </p>
-                    <form id="add-exp" className="exp-form" onSubmit={handleSubmit}>
+                    <form id="add-edu" className="exp-form" onSubmit={handleSubmit}>
                         <div className="form-group">
-                            <label htmlFor="company">Company</label>
-                            <input type="text" id="company" placeholder="Company" 
-                                name="company"
-                                value={company} 
+                            <label htmlFor="company">School</label>
+                            <input type="text" id="school" placeholder="School" 
+                                name="school"
+                                value={school} 
                                 onChange={handleChange}
                                 required 
                             />
                         </div>
                         <div className="form-group">
-                            <label htmlFor="title">Title</label>  
-                            <input type="text" id="title" placeholder="Developer, Analyst, etc" 
-                                name="title"
-                                value={title} 
+                            <label htmlFor="degree">Degree</label>  
+                            <input type="text" id="degree" placeholder="BS, MS, etc" 
+                                name="degree"
+                                value={degree} 
+                                onChange={handleChange}
+                                required 
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="fieldofstudy">Field Of Study</label>  
+                            <input type="text" id="fieldofstudy" placeholder="Computer Science, Mechanical Engineering, etc" 
+                                name="fieldofstudy"
+                                value={fieldofstudy} 
                                 onChange={handleChange}
                                 required 
                             />
@@ -87,24 +96,12 @@ const Experience = ({ experience, addExperience, editExperience, deleteExperienc
                                 required
                             />
                         </div>
-                            <div className="form-group">
-                            <input type="checkbox" id="current-job" 
-                                name="current" 
-                                checked={current}
-                                value={current}
-                                onChange={() => {
-                                    setNewExp({ ...newExp, current: !current });
-                                }} 
-                            /> 
-                            <label htmlFor="current-job">Current Job</label>
-                        </div>
                         <div className="form-group">
                             <label htmlFor="to">To Date</label>
                             <input id="to" type="date" 
                                 name="to" 
                                 value={to}
                                 onChange={handleChange}
-                                disabled={current}
                                 required
                             />
                         </div>
@@ -115,26 +112,25 @@ const Experience = ({ experience, addExperience, editExperience, deleteExperienc
                                 name="description"
                                 value={description}
                                 onChange={handleChange}
-                                required
                             />
                         </div>
                     </form>    
                 </div> ) : (
 
                 <Fragment>
-                    { experience.length > 0 ? (
-                        experience.map( exp => (
-                            <EditExperience 
-                                key={exp._id} 
-                                exp={exp} 
-                                editExperience={editExperience} 
-                                deleteExperience={deleteExperience}
+                    { education.length > 0 ? (
+                        education.map( edu => (
+                            <EditEducation
+                                key={edu._id} 
+                                edu={edu} 
+                                editEducation={editEducation} 
+                                deleteEducation={deleteEducation}
                             />
                         ))
                     ): 
                     (
                         <div>
-                            No experience to display.
+                            No education to display.
                         </div>
                     )}
                 </Fragment> )
@@ -143,10 +139,10 @@ const Experience = ({ experience, addExperience, editExperience, deleteExperienc
     )
 }
 
-Experience.propTypes = {
-    addExperience: PropTypes.func.isRequired,
-    editExperience: PropTypes.func.isRequired,
-    deleteExperience: PropTypes.func.isRequired
+Education.propTypes = {
+    addEducation: PropTypes.func.isRequired,
+    editEducation: PropTypes.func.isRequired,
+    deleteEducation: PropTypes.func.isRequired
 }
 
-export default connect(null, { addExperience, editExperience, deleteExperience })(Experience);
+export default connect(null, { addEducation, editEducation, deleteEducation })(Education);

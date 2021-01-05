@@ -5,8 +5,8 @@ const EditExperience = ({ exp, editExperience, deleteExperience }) => {
     const initialState = {
         company: exp.company,
         title: exp.title,
-        from: formatTo(formatDate(exp.from)),
-        to: formatTo(formatDate(exp.to)),
+        from: formatExp(formatDate(exp.from)),
+        to: formatExp(formatDate(exp.to)),
         current: exp.current,
         description: exp.description
     }
@@ -32,7 +32,6 @@ const EditExperience = ({ exp, editExperience, deleteExperience }) => {
 
     const handleSubmit = (e, id) => {
         e.preventDefault();
-        console.log(current);
         setShowEdit([id, false]);
         editExperience(id, editExp);
     }
@@ -52,7 +51,7 @@ const EditExperience = ({ exp, editExperience, deleteExperience }) => {
         ) : (
             <div className="add-experience card">
                 <p className="experience-header">
-                    <span className="company-name">SummitX</span>
+                    <span className="company-name">{exp.company}</span>
                     <span className="edit-experience">
                         <button className="add-exp-button" type="submit" form="edit-form"
                             onClick= {(e) => handleSubmit(e, exp._id)}
@@ -100,7 +99,6 @@ const EditExperience = ({ exp, editExperience, deleteExperience }) => {
                             checked={current}
                             value={current}
                             onChange={() => {
-                                console.log("change")
                                 setEditExp({ ...editExp, current: !current });
                             }} 
                         /> 
@@ -132,7 +130,7 @@ const EditExperience = ({ exp, editExperience, deleteExperience }) => {
     );
 }
 
-function formatTo(d) {
+function formatExp(d) {
     if(d === null) {
         return null;
     }
@@ -157,7 +155,7 @@ function formatTo(d) {
       day = dateArray[1];
     }
   
-    return year + '-' +month + '-' +day ;
+    return year + '-' +month + '-' +day;
 }
 
 export default EditExperience;

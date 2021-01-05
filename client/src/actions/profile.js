@@ -147,3 +147,55 @@ export const deleteExperience = id => async dispatch => {
         });
     }
 }
+
+// Add Education
+export const addEducation = newEdu => async dispatch => {
+    try {
+        const res = await api.post('/profile/education/', newEdu);
+
+        dispatch({
+            type: UPDATE_PROFILE,
+            payload: res.data
+        });
+
+    } catch (err) {
+        dispatch({
+            type: PROFILE_ERROR,
+            payload: { msg: err.response.statusText, status: err.response.status }         
+        });
+    }
+}
+
+// Edit Education
+export const editEducation = (id, editEdu) => async dispatch => {
+    try {
+        const res = await api.put(`/profile/education/${id}`, editEdu);
+
+        dispatch({
+            type: UPDATE_PROFILE,
+            payload: res.data
+        });
+    } catch (err) {
+        dispatch({
+            type: PROFILE_ERROR,
+            payload: { msg: err.response.statusText, status: err.response.status }         
+        });
+    }
+}
+
+// Delete Education
+export const deleteEducation = id => async dispatch => {
+    try {
+        const res = await api.delete(`/profile/education/${id}`);
+
+        dispatch({
+            type: UPDATE_PROFILE,
+            payload: res.data
+        });
+    } catch (err) {
+        dispatch({
+            type: PROFILE_ERROR,
+            payload: { msg: err.response.statusText, status: err.response.status }         
+        });
+    }
+}

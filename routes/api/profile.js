@@ -390,7 +390,8 @@ router.post('/education', auth, [
     check('school', 'School is required').not().isEmpty(),
     check('degree', 'Degree is required').not().isEmpty(),
     check('fieldofstudy', 'Field of Study is required').not().isEmpty(),
-    check('from', 'From date is required').not().isEmpty()
+    check('from', 'From date is required').not().isEmpty(),
+    check('to', 'To date is required').not().isEmpty()
 ], async (req, res) => {
     
     const errors = validationResult(req);
@@ -409,8 +410,8 @@ router.post('/education', auth, [
 
         let education = {
             school: school.trim(),
-            degree,
-            fieldofstudy,
+            degree: degree.trim(),
+            fieldofstudy: fieldofstudy.trim(),
             description: description.trim(),
             from,
             to
@@ -459,8 +460,8 @@ router.put('/education/:id', auth, [
 
         let education = {
             school: school.trim(),
-            degree,
-            fieldofstudy,
+            degree: degree.trim(),
+            fieldofstudy: fieldofstudy.trim(),
             description: description.trim(),
             from,
             to
@@ -508,6 +509,11 @@ router.delete('/education/:id', auth, async (req, res) => {
 
         await profile.save();
 
+        profile = await Profile.findOne({ user : req.user.id }).populate(
+            'user',
+            ['firstname', 'lastname']
+        ); 
+        
         return res.json(profile);
     } catch (err) {
         console.log(err.message);

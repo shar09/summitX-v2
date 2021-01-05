@@ -9,6 +9,7 @@ import Spinner from '../layout/Spinner';
 // Profile Components
 import PorfileTop from './ProfileTop';
 import Experience from './Experience';
+import Education from './Education';
 
 const Dashboard = ({ auth: { user }, profile: { profile, profileLoading }, getProfile }) => {
     useEffect( () => {
@@ -34,6 +35,9 @@ const Dashboard = ({ auth: { user }, profile: { profile, profileLoading }, getPr
             <PorfileTop profile={profile} />
             <div className="experience">
                 <Experience experience={profile.experience} />
+            </div>
+            <div className="experience">
+                <Education education={profile.education} />
             </div>
         </section>
     )
