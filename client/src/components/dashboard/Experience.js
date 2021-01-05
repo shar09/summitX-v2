@@ -3,9 +3,9 @@ import formatDate from '../../utils/formatDate';
 import EditExperience from './EditExperience';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { addExperience, editExperience } from '../../actions/profile';
+import { addExperience, editExperience, deleteExperience } from '../../actions/profile';
 
-const Experience = ({ experience, addExperience, editExperience }) => {    
+const Experience = ({ experience, addExperience, editExperience, deleteExperience }) => {    
     const [addExp, setAddExp] = useState(false);
 
     const initialState = {
@@ -91,6 +91,7 @@ const Experience = ({ experience, addExperience, editExperience }) => {
                             <div className="form-group">
                             <input type="checkbox" id="current-job" 
                                 name="current" 
+                                checked={current}
                                 value={current}
                                 onChange={() => {
                                     setNewExp({ ...newExp, current: !current });
@@ -128,6 +129,7 @@ const Experience = ({ experience, addExperience, editExperience }) => {
                                 key={exp._id} 
                                 exp={exp} 
                                 editExperience={editExperience} 
+                                deleteExperience={deleteExperience}
                             />
                         ))
                     ): 
@@ -144,7 +146,8 @@ const Experience = ({ experience, addExperience, editExperience }) => {
 
 Experience.propTypes = {
     addExperience: PropTypes.func.isRequired,
-    editExperience: PropTypes.func.isRequired
+    editExperience: PropTypes.func.isRequired,
+    deleteExperience: PropTypes.func.isRequired
 }
 
-export default connect(null, { addExperience, editExperience })(Experience);
+export default connect(null, { addExperience, editExperience, deleteExperience })(Experience);

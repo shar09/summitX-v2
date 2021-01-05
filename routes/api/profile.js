@@ -260,7 +260,7 @@ router.post('/experience', auth, [
         return res.status(400).json({ errors: errors.array() });
     }
 
-    const { company, title, description, from, to } = req.body;
+    const { company, title, description, current, from, to } = req.body;
 
     try {
         let profile = await Profile.findOne({ user: req.user.id });
@@ -273,6 +273,7 @@ router.post('/experience', auth, [
             company: company.trim(),
             title: title.trim(),
             description: description.trim(),
+            current,
             from,
             to,
         }
@@ -309,7 +310,7 @@ router.put('/experience/:id', auth, [
         return res.status(400).json({ errors: errors.array() });
     }
 
-    const { company, title, description, from, to } = req.body;
+    const { company, title, description, current, from, to } = req.body;
 
     try {
         let profile = await Profile.findOne({ user: req.user.id });
@@ -322,6 +323,7 @@ router.put('/experience/:id', auth, [
             company: company.trim(),
             title: title.trim(),
             description: description.trim(),
+            current,
             from,
             to
         }
@@ -364,7 +366,7 @@ router.delete('/experience/:id', auth, async (req, res) => {
 
         profile.experience = profile.experience.filter(exp => {
             return exp.id !== req.params.id
-        })
+        });
 
         await profile.save();
 

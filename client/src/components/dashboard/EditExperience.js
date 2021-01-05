@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import formatDate from '../../utils/formatDate';
 
-const EditExperience = ({ exp, editExperience }) => {
+const EditExperience = ({ exp, editExperience, deleteExperience }) => {
     const initialState = {
         company: exp.company,
         title: exp.title,
@@ -32,6 +32,7 @@ const EditExperience = ({ exp, editExperience }) => {
 
     const handleSubmit = (e, id) => {
         e.preventDefault();
+        console.log(current);
         setShowEdit([id, false]);
         editExperience(id, editExp);
     }
@@ -41,8 +42,8 @@ const EditExperience = ({ exp, editExperience }) => {
             <div key={exp._id} className="card">
                 <p className="experience-header">
                     <span className="company-name">{exp.company}</span>
-                    <span className="edit-experience"> <i className="far fa-edit"></i>
-                        <span className="icon-text" onClick={ () => setShowEdit([exp._id, true]) }> Edit</span> 
+                    <span className="edit-experience" onClick={ () => setShowEdit([exp._id, true]) }> <i className="far fa-edit"></i>
+                        <span className="icon-text"> Edit</span> 
                     </span>
                 </p>
                 <p className="position">{title} <span className="date">{formatDate(exp.from)} - {exp.to ? formatDate(exp.to) : 'Present'}</span> </p>
@@ -58,7 +59,10 @@ const EditExperience = ({ exp, editExperience }) => {
                         >
                             Save
                         </button>
-                        <button className="delete-exp-button" type="submit">Delete</button>
+                        <button className="delete-exp-button"
+                            onClick={() => deleteExperience(exp._id) }    
+                        >Delete
+                        </button>
                         <span onClick={() => { setShowEdit([exp._id, false]); setInitialState(); }} className="exp-cancel">Cancel</span>
                     </span>
                 </p>
@@ -93,8 +97,10 @@ const EditExperience = ({ exp, editExperience }) => {
                     <div className="form-group">
                         <input type="checkbox" id="current-job" 
                             name="current" 
+                            checked={current}
                             value={current}
                             onChange={() => {
+                                console.log("change")
                                 setEditExp({ ...editExp, current: !current });
                             }} 
                         /> 
@@ -127,10 +133,14 @@ const EditExperience = ({ exp, editExperience }) => {
 }
 
 function formatTo(d) {
+    if(d === null) {
+        return null;
+    }
+
     let dateArray = d.split('/');
     let month = "";
     let day = "";
-   
+
     let year = dateArray[2];
   
     if( dateArray[0].length === 1) {

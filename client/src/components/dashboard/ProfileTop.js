@@ -95,7 +95,7 @@ const ProfileTop = ({ profile, editName, updateProfile }) => {
                         <span className="exp-cancel" onClick={ () => { setEditMode(false);  setInitialState(); }}>Cancel</span>
                     </span>
                 </p>
-                <form id="profile-top" className="exp-form">
+                <form id="profile-top" className={` ${editMode} ? 'exp-form'`}>
                     {/* <div className="form-group">
                         <label htmlFor="first-name">First Name</label>
                         <input type="text" id="first-name" placeholder="First Name" 

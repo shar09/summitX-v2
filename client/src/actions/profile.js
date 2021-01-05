@@ -110,7 +110,7 @@ export const addExperience = newExp => async dispatch => {
 
 // Edit Experience
 export const editExperience = (id, editExp) => async dispatch => {
-    console.log("edit");
+    
     try {
         const res = await api.put(`/profile/experience/${id}`, editExp);
 
@@ -125,6 +125,25 @@ export const editExperience = (id, editExp) => async dispatch => {
         dispatch({
           type: PROFILE_ERROR,
           payload: { msg: err.response.statusText, status: err.response.status }
+        });
+    }
+}
+
+// Delete Experience
+export const deleteExperience = id => async dispatch => {
+
+    try {
+        const res = await api.delete(`/profile/experience/${id}`);
+
+        dispatch({
+            type: UPDATE_PROFILE,
+            payload: res.data
+        });
+    }
+    catch (err) {
+        dispatch({
+            type: PROFILE_ERROR,
+            payload: { msg: err.response.statusText, status: err.response.status }         
         });
     }
 }
