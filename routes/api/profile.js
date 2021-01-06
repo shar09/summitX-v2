@@ -16,27 +16,28 @@ const s3 = new aws.S3({
 
 const resumeUpload = multer({
     storage: multerS3({
-     s3: s3,
-     bucket: `${process.env.awsbucket}`,
-     acl: 'public-read',
-     key: function (req, file, cb) {
-        cb(null, new Date().toISOString() + file.originalname);
-     }
+        s3: s3,
+        bucket: `${process.env.awsbucket}`,
+        acl: 'public-read',
+        contentType: multerS3.AUTO_CONTENT_TYPE,
+        contentDisposition: 'inline',
+        key: function (req, file, cb) {
+            cb(null, new Date().toISOString() + file.originalname);
+        }
     }),
     limits:{ fileSize: 2000000 }, // In bytes: 2000000 bytes = 2 MB
     fileFilter: function( req, file, cb ) {
-     checkFileType( file, cb );
+        checkFileType( file, cb );
     }
 }).single('resume');
 
 function checkFileType( file, cb ) {
-    if(file.mimetype === 'application/pdf' || 
-        file.mimetype === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+    if(file.mimetype === 'application/pdf') {
         cb(null, true);
     }
     else {
         cb(null, false);
-        return cb(new Error('Only pdf or docx format allowed!'));
+        return cb(new Error('Only pdf format allowed!'));
     }
 }
 
@@ -44,7 +45,7 @@ function checkFileType( file, cb ) {
 // @desc   get current users profile
 // @access private
 
-router.get("/me", auth, async (req, res) => {  
+router.get('/me', auth, async (req, res) => {  
     try {
         const profile = await Profile.findOne({ user : req.user.id }).populate(
           'user',
@@ -65,7 +66,7 @@ router.get("/me", auth, async (req, res) => {
 // @desc   create or update user's profile info
 // @access private
 
-router.post("/", auth, [
+router.post('/', auth, [
     check('position', 'position is required').not().isEmpty(),
     check('state', 'state is required').not().isEmpty(),
     check('city', 'city is required').not().isEmpty(),
@@ -139,19 +140,38 @@ router.post('/resume', auth, ( req, res ) => { resumeUpload( req, res, async ( e
                 res.status(400).json({ errors: [{ msg: "No File Selected" }] });
             } else {
                 // If Success
-                console.log( 'requestOkokok', req.file );
-                const resumeName = req.file.key;
-                const resumeLocation = req.file.location;   
+                // console.log( 'requestOkokok', req.file );
+                const name = req.file.originalname;
+                const location = req.file.location;  
+                const key = req.file.key; 
+
                 const resume = {
-                    resumeName,
-                    resumeLocation
-                }
+                    name,
+                    location,
+                    key
+                };
                 // Save the file name into database into profile model 
                 let profile = await Profile.findOne({ user: req.user.id });
 
                 if(!profile) {
                     return res.status(400).json({ errors: [{ msg: "Profile not found "} ] });
                 }
+
+                // if(profile.resume) {
+                //     let params = {
+                //         Bucket: `${process.env.awsbucket}`,
+                //         Key: profile.resume.key
+                //         /* 
+                //         where value for 'Key' equals 'pathName1/pathName2/.../pathNameN/fileName.ext'
+                //         - full path name to your file without '/' at the beginning
+                //         */
+                //     };
+                    
+                //     s3.deleteObject(params, function(err, data) {
+                //         if (err) console.log(err, err.stack); // an error occurred
+                //         else     console.log(data);           // successful response
+                //     });
+                // }
                 
                 profile.resume = resume;
 
@@ -159,6 +179,7 @@ router.post('/resume', auth, ( req, res ) => { resumeUpload( req, res, async ( e
                 
                 const userModel = await User.findById(req.user.id);
                 userModel.isResume = true;
+
                 await userModel.save();
 
                 profile = await Profile.findOne({ user : req.user.id }).populate(
@@ -174,7 +195,49 @@ router.post('/resume', auth, ( req, res ) => { resumeUpload( req, res, async ( e
         res.status(500).send('Server Error');
     }
 });
-});     
+});
+
+// @route  GET api/profile/resume
+// @desc   get resume link (browser)
+// @access private
+
+router.get('/resume', auth, async (req, res) => {
+ 
+    try {
+        aws.config.update({ 
+            accessKeyId: `${process.env.awskeyid}`,
+            secretAccessKey: `${process.env.awsaccesskey}`,
+            region: 'us-east-2',
+            signatureVersion: 'v4'
+        });
+    
+        const profile = await Profile.findOne({ user : req.user.id });
+
+        if(!profile) {
+            return res.status(400).json({ errors: [{ msg: "Profile not found "} ] });
+        }
+    
+        const s4 = new aws.S3();
+        const myBucket = `${process.env.awsbucket}`;
+        const myKey = profile.resume.key;
+        const signedUrlExpireSeconds = 60 * 5;
+    
+        const url = s4.getSignedUrl('getObject', {
+            Bucket: myBucket,
+            Key: myKey,
+            ResponseContentType: 'application/pdf',
+            ResponseContentDisposition: 'inline',
+            Expires: signedUrlExpireSeconds
+        });
+
+        // console.log(url);
+
+        res.json({ url });
+    } catch (err) {
+        console.log(err.message);
+        res.status(500).send('Server Error');
+    }
+});
 
 // @route  POST api/profile/skills
 // @desc   add skills

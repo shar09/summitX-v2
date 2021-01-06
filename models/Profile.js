@@ -6,10 +6,13 @@ const ProfileSchema = new mongoose.Schema({
         ref: 'user'
     },
     resume: {
-        resumeName: {
+        name: {
             type: String 
         },
-        resumeLocation: {
+        location: {
+            type: String
+        },
+        key: {
             type: String
         }
     },
