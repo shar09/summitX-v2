@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { uploadResume } from '../../actions/profile';
 import { resetErrors } from '../../actions/error';
 
-const Resume = ({errors, resume, uploadResume}) => {
+const Resume = ({errors, resume, uploadResume, resetErrors }) => {
 
     useEffect( () => {
         if(errors.length === 0) {
@@ -27,6 +27,10 @@ const Resume = ({errors, resume, uploadResume}) => {
 
         const formData = new FormData();
         formData.append('resume', file);
+
+        if(errors.length > 0) {
+            resetErrors();
+        }
 
         uploadResume(formData);
     }
@@ -103,7 +107,11 @@ const mapStateToProps = state => ({
     resume: state.profile.profile.resume
 });
 
-export default connect(mapStateToProps, { uploadResume })(Resume);
+// const mapDispatchToProps = dispatch => ({
+//     resetErrors: () => dispatch(resetErrors())
+// });
+
+export default connect(mapStateToProps, { uploadResume, resetErrors })(Resume);
 
 // ------ On Hold ------ //
 // import api from '../../utils/api';

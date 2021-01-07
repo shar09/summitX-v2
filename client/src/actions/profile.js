@@ -69,7 +69,7 @@ export const getProfile = () => async dispatch => {
 
 // Upload Resume
 export const uploadResume = resume => async dispatch => {
-    dispatch(resetErrors()); 
+    // dispatch(resetErrors()); 
 
     try {
         const res = await api.post('/profile/resume', resume);
