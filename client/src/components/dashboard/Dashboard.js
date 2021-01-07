@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -10,10 +10,10 @@ import Spinner from '../layout/Spinner';
 import PorfileTop from './ProfileTop';
 import Experience from './Experience';
 import Education from './Education';
+import Resume from './Resume';
 
-const Dashboard = ({ auth: { user }, profile: { profile, profileLoading }, getProfile }) => {
+const Dashboard = ({ auth: { user }, profile: { profile, profileLoading }, errors, getProfile }) => {
     useEffect( () => {
-        console.log("dashboard");
         getProfile();
     }, [getProfile]);
 
@@ -32,13 +32,15 @@ const Dashboard = ({ auth: { user }, profile: { profile, profileLoading }, getPr
 
     return (
         <section className="container">
-            <PorfileTop profile={profile} />
-            <div className="experience">
-                <Experience experience={profile.experience} />
-            </div>
-            <div className="experience">
-                <Education education={profile.education} />
-            </div>
+            <PorfileTop profile={profile} />   
+            <Experience experience={profile.experience} />
+            <Education education={profile.education} />
+            <Resume 
+                // resume={profile.resume} 
+                // errors={errors} 
+                // showEditResume={showEditResume}
+                // setShowEditResume={setShowEditResume}
+            /> 
         </section>
     )
 }
@@ -46,13 +48,15 @@ const Dashboard = ({ auth: { user }, profile: { profile, profileLoading }, getPr
 Dashboard.propTypes = {
    auth: PropTypes.object.isRequired,
    profile: PropTypes.object.isRequired,
+   errors: PropTypes.array.isRequired,
    getProfile: PropTypes.func.isRequired,
    loadUser: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
     auth: state.auth,
-    profile: state.profile
+    profile: state.profile,
+    errors: state.errors
 });
 
 export default connect(mapStateToProps, { getProfile, loadUser })(Dashboard);

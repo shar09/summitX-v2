@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import signupimg from '../../../images/signup-img.jpg';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -8,6 +8,7 @@ import Spinner from '../../layout/Spinner';
 
 const SignUpThree = ({ uploadResume, 
         auth: { isAuthenticated, loading, userLoaded, user },  
+        errors
     }) => {
         
     const [resume, uploadFile] = useState(null);
@@ -16,7 +17,7 @@ const SignUpThree = ({ uploadResume,
         uploadFile(e.target.files[0]);
     }
 
-    const handleSubmit = async e => {
+    const handleSubmit = e => {
         e.preventDefault();
 
         const formData = new FormData();
@@ -55,19 +56,29 @@ const SignUpThree = ({ uploadResume,
                         required 
                     />
                 </div>
+                {   errors.map( (error, index) => (
+                        error.param === "resume" ? 
+                        (<small key={index} className="form-error">
+                            {error.msg}
+                        </small>
+                        ): <Fragment />   
+                    ))
+                } 
                 <button type="submit" className="btn-primary">Register</button>  
             </form>
         </section>
-    )
+    );
 }
 
 SignUpThree.propTypes = {
     uploadResume: PropTypes.func.isRequired,
-    auth: PropTypes.object.isRequired
+    auth: PropTypes.object.isRequired,
+    errors: PropTypes.array.isRequired
 };
 
 const mapStateToProps = state => ({
-    auth: state.auth
+    auth: state.auth,
+    errors: state.errors
 });
 
 export default connect(mapStateToProps, { uploadResume })(SignUpThree);

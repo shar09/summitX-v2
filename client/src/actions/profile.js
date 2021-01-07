@@ -7,6 +7,7 @@ import {
     UPLOAD_RESUME
 } from './types';
 import { loadUser } from './auth';
+import { setError, resetErrors } from './error';
 
 // Create Profile
 export const createProfile = formData => async dispatch => {
@@ -68,6 +69,8 @@ export const getProfile = () => async dispatch => {
 
 // Upload Resume
 export const uploadResume = resume => async dispatch => {
+    dispatch(resetErrors()); 
+
     try {
         const res = await api.post('/profile/resume', resume);
 
@@ -79,14 +82,28 @@ export const uploadResume = resume => async dispatch => {
         dispatch(loadUser());
     }
     catch (err) {
-        // const errors = err.response.data.errors;
-
-        dispatch({
-            type: PROFILE_ERROR,
-            payload: { msg: err.response.statusText, status: err.response.status }
-          });
+        const errors = err.response.data.errors;
+    
+        if(errors) {
+            errors.forEach(error => dispatch(setError(error.msg, error.param)));
+        }
     }
 }
+
+// Get Resume
+// export const getResume = () => async dispatch => {
+//     try {
+        
+//         const res = await api.get('profile/resume');
+
+
+//     } catch (err) {
+//         dispatch({
+//             type: PROFILE_ERROR,
+//             payload: { msg: err.response.statusText, status: err.response.status }
+//         });
+//     }
+// }
 
 // Add Experience
 export const addExperience = newExp => async dispatch => {

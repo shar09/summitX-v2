@@ -1,5 +1,5 @@
 import api from '../utils/api';
-import { setError } from './error';
+import { setError, resetErrors } from './error';
 import { SIGNIN, 
     SIGNOUT,
     USER_LOADED,
@@ -7,7 +7,6 @@ import { SIGNIN,
     CREATE_ACCOUNT,
     CLEAR_PROFILE
 } from './types'; 
-import { resetErrors } from './error';
 
 // Load User
 export const loadUser = () => async dispatch => {

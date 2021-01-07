@@ -37,7 +37,7 @@ function checkFileType( file, cb ) {
     }
     else {
         cb(null, false);
-        return cb(new Error('Only pdf format allowed!'));
+        return cb(new Error('Only pdf file less than 2 MB allowed!'));
     }
 }
 
@@ -133,11 +133,11 @@ router.post('/', auth, [
 router.post('/resume', auth, ( req, res ) => { resumeUpload( req, res, async ( error ) => {
     try {
         if(error) {
-            res.status(400).json({ errors: [{ msg: error.message }] });
+            res.status(400).json({ errors: [{ msg: error.message, param: "resume" }] });
         } else {
             // If File not found
-            if( req.file === undefined ){
-                res.status(400).json({ errors: [{ msg: "No File Selected" }] });
+            if( req.file === undefined ) {
+                res.status(400).json({ errors: [{ msg: "No File Selected", param: "resume" }] });
             } else {
                 // If Success
                 // console.log( 'requestOkokok', req.file );
@@ -182,12 +182,12 @@ router.post('/resume', auth, ( req, res ) => { resumeUpload( req, res, async ( e
 
                 await userModel.save();
 
-                profile = await Profile.findOne({ user : req.user.id }).populate(
-                    'user',
-                    ['firstname', 'lastname']
-                ); 
+                // profile = await Profile.findOne({ user : req.user.id }).populate(
+                //     'user',
+                //     ['firstname', 'lastname']
+                // ); 
                 
-                return res.json(profile);
+                return res.json(profile.resume);
             }
         }   
     } catch (err) {
@@ -232,7 +232,7 @@ router.get('/resume', auth, async (req, res) => {
 
         // console.log(url);
 
-        res.json({ url });
+        return res.json({ url });
     } catch (err) {
         console.log(err.message);
         res.status(500).send('Server Error');

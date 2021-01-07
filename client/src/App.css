@@ -372,6 +372,7 @@ input[type="file"]::-webkit-file-upload-button {
 .profile-about {
   display: grid;
   grid-template-columns: 1fr 6fr 1fr;
+  margin-bottom: 10px;
 }
 
 .about-content {
@@ -565,6 +566,30 @@ input[type="file"]::-webkit-file-upload-button {
 .delete-exp-button:hover {
   cursor: pointer;
   background-color: rgb(243, 26, 48);
+}
+
+/* ------Resume-------- */
+.resume-form {
+  padding: 0 10px 20px;
+}
+
+.show-resume {
+  background-color: whitesmoke;
+  padding: 20px;
+}
+
+.resume-name {
+  font-weight: 500;
+  margin-right: 30px;
+}
+
+.resume-link {
+  text-decoration: none;
+  color: #5cadff;
+} 
+
+.resume-form > .form-group > label {
+  font-size: 14px;
 }
 
 /* ------Media Queries-------- */
@@ -763,6 +788,10 @@ input[type="file"]::-webkit-file-upload-button {
   .landing-forms {
     margin-top: 3rem;
   }
+
+  .resume-link {
+    display: block;
+}
 }
 
 @media only screen and (max-width: 320px) {

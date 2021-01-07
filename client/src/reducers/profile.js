@@ -45,7 +45,10 @@ function profileReducer(state=initialState, action) {
         case UPLOAD_RESUME: 
             return {
                 ...state,
-                profile: payload,
+                profile: {
+                    ...state.profile,
+                    resume: payload
+                },
                 profileLoading: false
             } 
         case CLEAR_PROFILE:
