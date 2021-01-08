@@ -263,13 +263,8 @@ router.post('/skills', auth, check('text', 'Skill is required').not().isEmpty(),
         profile.skills.push(skill);
 
         await profile.save();
-
-        profile = await Profile.findOne({ user : req.user.id }).populate(
-            'user',
-            ['firstname', 'lastname']
-        ); 
         
-        return res.json(profile);
+        return res.json(profile.skills);
 
     } catch (err) {
         console.log(err.message);
@@ -294,13 +289,8 @@ router.delete('/skills/:id', auth, async (req, res) => {
         })
         
         await profile.save();
-
-        profile = await Profile.findOne({ user : req.user.id }).populate(
-            'user',
-            ['firstname', 'lastname']
-        ); 
         
-        return res.json(profile);
+        return res.json(profile.skills);
     } catch (err) {
         console.log(err.message);
         res.status(500).send('Server Error');

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -11,8 +11,9 @@ import PorfileTop from './ProfileTop';
 import Experience from './Experience';
 import Education from './Education';
 import Resume from './Resume';
+import Skills from './Skills';
 
-const Dashboard = ({ auth: { user }, profile: { profile, profileLoading }, errors, getProfile }) => {
+const Dashboard = ({ auth: { user }, profile: { profile, profileLoading }, getProfile }) => {
     useEffect( () => {
         getProfile();
     }, [getProfile]);
@@ -35,12 +36,8 @@ const Dashboard = ({ auth: { user }, profile: { profile, profileLoading }, error
             <PorfileTop profile={profile} />   
             <Experience experience={profile.experience} />
             <Education education={profile.education} />
-            <Resume 
-                // resume={profile.resume} 
-                // errors={errors} 
-                // showEditResume={showEditResume}
-                // setShowEditResume={setShowEditResume}
-            /> 
+            <Resume /> 
+            <Skills />
         </section>
     )
 }
@@ -48,7 +45,6 @@ const Dashboard = ({ auth: { user }, profile: { profile, profileLoading }, error
 Dashboard.propTypes = {
    auth: PropTypes.object.isRequired,
    profile: PropTypes.object.isRequired,
-   errors: PropTypes.array.isRequired,
    getProfile: PropTypes.func.isRequired,
    loadUser: PropTypes.func.isRequired
 };
@@ -56,7 +52,6 @@ Dashboard.propTypes = {
 const mapStateToProps = state => ({
     auth: state.auth,
     profile: state.profile,
-    errors: state.errors
 });
 
 export default connect(mapStateToProps, { getProfile, loadUser })(Dashboard);

@@ -54,7 +54,7 @@ const Resume = ({errors, resume, uploadResume, resetErrors }) => {
             ) : (
                 <div className="card">
                     <p className="experience-header">
-                        <span className="company-name">Upload your newest resume</span>
+                        <span className="company-name">Upload Resume (PDF)</span>
                         <span className="">
                             <button className="add-exp-button" type="submit" 
                                 form="resume-upload"
@@ -73,7 +73,7 @@ const Resume = ({errors, resume, uploadResume, resetErrors }) => {
                     </p>
                     <form id="resume-upload" className="resume-form" onSubmit={handleSubmit}>
                         <div className="form-group">
-                            <label htmlFor="myfile">Upload Resume (PDF)</label>
+                            <label htmlFor="myfile">Upload your latest resume</label>
                             <input type="file" 
                                 id="myfile" 
                                 name="myfile" 
@@ -106,10 +106,6 @@ const mapStateToProps = state => ({
     errors: state.errors,
     resume: state.profile.profile.resume
 });
-
-// const mapDispatchToProps = dispatch => ({
-//     resetErrors: () => dispatch(resetErrors())
-// });
 
 export default connect(mapStateToProps, { uploadResume, resetErrors })(Resume);
 

@@ -4,7 +4,9 @@ import {
     UPDATE_PROFILE,
     GET_PROFILE,
     PROFILE_ERROR,
-    UPLOAD_RESUME
+    UPLOAD_RESUME,
+    UPDATE_SKILL,
+
 } from './types';
 import { loadUser } from './auth';
 import { setError, resetErrors } from './error';
@@ -207,6 +209,41 @@ export const deleteEducation = id => async dispatch => {
 
         dispatch({
             type: UPDATE_PROFILE,
+            payload: res.data
+        });
+    } catch (err) {
+        dispatch({
+            type: PROFILE_ERROR,
+            payload: { msg: err.response.statusText, status: err.response.status }         
+        });
+    }
+}
+
+// Add Skill
+export const addSkill = text => async dispatch => {
+    try {
+        const res = await api.post('/profile/skills', text);
+
+        dispatch({
+            type: UPDATE_SKILL,
+            payload: res.data
+        });
+    }
+    catch(err) {
+        dispatch({
+            type: PROFILE_ERROR,
+            payload: { msg: err.response.statusText, status: err.response.status }         
+        });
+    }
+}
+
+// Delete Skill
+export const deleteSkill = id => async dispatch => {
+    try {
+        const res = await api.delete(`/profile/skills/${id}`);
+
+        dispatch({
+            type: UPDATE_SKILL,
             payload: res.data
         });
     } catch (err) {
