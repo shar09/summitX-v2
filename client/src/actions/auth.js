@@ -87,7 +87,7 @@ export const editName = (firstname, lastname) => async dispatch => {
     }
 }
 
-// Reset Password
+// Forgot Password
 export const forgotPassword = email => async dispatch => {
 
     try {
@@ -98,6 +98,25 @@ export const forgotPassword = email => async dispatch => {
             payload: res.data
         });
 
+    } catch (err) {
+        const errors = err.response.data.errors;
+
+        if(errors) {
+            errors.forEach(error => dispatch(setError(error.msg, error.param)));
+        }
+    }
+}
+
+// Reset Password
+export const resetPassword = (password, token) => async dispatch => {
+
+    try {
+        const res = await api.post('/auth/reset', { password, token });
+
+        dispatch({
+            type: UPDATE_MSG,
+            payload: res.data
+        });
     } catch (err) {
         const errors = err.response.data.errors;
 

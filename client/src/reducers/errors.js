@@ -4,14 +4,6 @@ import { SET_ERROR,
 
 const initialState = [];
 
-// for(let i=0; i<state.length; i++) {
-//     if(state[i].param === payload.param) {
-//         return state;
-//     }
-//     else
-//         continue;
-// }
-
 function errorsReducer(state = initialState, action) {
     const { type, payload } = action;
 

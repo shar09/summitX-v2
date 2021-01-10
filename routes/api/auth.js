@@ -79,12 +79,12 @@ async (req, res) => {
     }
     catch(err) {
         console.log(err.message);
-        res.status(500).send('Server Error')
+        res.status(500).send('Server Error');
     }    
 });
 
-// @route  POST api/auth
-// @desc   Login User
+// @route  POST api/auth/password
+// @desc   Send reset link
 // @access Public
 
 router.post('/password', check('email','Enter a valid email').isEmail(), (req, res) => {  
@@ -108,13 +108,15 @@ router.post('/password', check('email','Enter a valid email').isEmail(), (req, r
             await user.save();
             
             var email = {
-                to: 'pratyushatelu@gmail.com',
+                to: `${user.email}`,
                 from: 'sharathtelu9@gmail.com',
-                subject: 'Hi there',
-                text: 'Awesome sauce',
-                html: '<b>Awesome sauce</b>'
+                subject: 'summitX reset password link',
+                html: `
+                    <p>Hello ${user.firstname}</p>
+                    <p>Click on this <a href="http://localhost:3000/reset/${token}">Link</a> to reset your password.</p>
+                `
             };
-             
+
             mailer.sendMail(email, function(err, res) {
                 if (err) { 
                     console.log(err) 
@@ -122,12 +124,43 @@ router.post('/password', check('email','Enter a valid email').isEmail(), (req, r
                 console.log(res);
             });
     
-            return res.json({ msg: "Check your email for reset-password link." });
+            return res.json({ msg: "Check your email for reset-password link", param:"fp-msg" });
         } catch (err) {
             console.log(err.message);
             res.status(500).send('Server Error');
         }
     });
+});
+
+// @route  POST api/auth/reset
+// @desc   Reset
+// @access Public (token)
+
+router.post('/reset', async (req, res) => {
+
+    try {
+        const { password, token } = req.body;
+
+        const user = await User.findOne({ resetToken: token , expireToken: { $gt: Date.now() } } );
+    
+        if(!user) {
+            return res.status(400).json({ errors: [{ msg: "Token is not valid", param: "token" }] });
+        }
+    
+        // encrypt password
+        const salt = await bcrypt.genSalt(10);
+        user.password = await bcrypt.hash(password, salt);
+        user.resetToken = undefined;
+        user.expireToken = undefined;
+    
+        //saves to database
+        await user.save(); 
+    
+        return res.json({ msg: "Your password has been reset succesfully.", param:"rs-msg" });
+    } catch (err) {
+        console.log(err.message);
+        res.status(500).send('Server Error');
+    }
 });
 
 module.exports = router;

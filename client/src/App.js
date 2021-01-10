@@ -10,6 +10,7 @@ import SignUpTwo from './components/auth/signup/SignUpTwo';
 import SignUpThree from './components/auth/signup/SignUpThree';
 import Dashboard from './components/dashboard/Dashboard';
 import ForgotPassword from './components/auth/ForgotPassword';
+import ResetPassword from './components/auth/ResetPassword';
 
 // Redux
 import { Provider } from 'react-redux';
@@ -51,6 +52,7 @@ const App = () => {
                             <SignUpOne setSignInModalState={setSignInModalState} />
                         </Route>
                         <Route exact path="/forgot-password" component={ForgotPassword}/>
+                        <Route exact path="/reset/:token" component={ResetPassword} />
                         <PrivateRoute exact path="/signup-two" component={SignUpTwo} />
                         <PrivateRoute exact path="/signup-three" component={SignUpThree} />
                         <PrivateRoute exact path="/dashboard" component={Dashboard} />

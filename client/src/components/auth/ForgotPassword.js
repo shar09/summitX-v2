@@ -6,28 +6,9 @@ import { connect } from 'react-redux';
 import Spinner from '../layout/Spinner';
 import { forgotPassword } from '../../actions/auth';
 
-const ForgotPassword = ({ auth: { isAuthenticated, loading, userLoaded, user, msg }, errors, forgotPassword  }) => {
+const ForgotPassword = ({ auth: { msg }, errors, forgotPassword  }) => {
 
     const [ email, setEmail ] = useState('');
-
-    if (loading) {
-        return <Spinner />
-    }
-    else {
-        if(userLoaded) {
-            if(isAuthenticated && !user.isProfile) {
-                return <Redirect to="/signup-two" />
-            }
-
-            if(isAuthenticated && user.isProfile && !user.isResume) {
-                return <Redirect to="/signup-three" />
-            }
-
-            if(isAuthenticated && user.isProfile && user.isResume) {
-                return <Redirect to="/dashboard" />
-            }    
-        }
-    }
 
     const handlChange = e => {
         setEmail(e.target.value);
@@ -64,11 +45,13 @@ const ForgotPassword = ({ auth: { isAuthenticated, loading, userLoaded, user, ms
                         ): <Fragment />   
                     ))
                 } 
-                { msg === '' ? (
-                    <button type="submit" className="btn-primary">Send Link</button>  
-                ) : ( 
-                    <p> {msg.msg}</p>
-                )
+                {
+                    msg[0] && msg[0].param === 'fp-msg' ? (
+                        <p className="success-msg"> {msg[0].msg} </p>
+                    ) 
+                    : ( 
+                        <button type="submit" className="btn-primary">Send Link</button> 
+                    )
                 }
             </form>
         </section>

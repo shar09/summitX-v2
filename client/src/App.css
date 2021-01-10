@@ -5,6 +5,7 @@
   --primary-hover: #65b0fa;
   --gray-color: #626f7f;
   --danger-color: #dc3545;
+  --sucess-color: #4BB543;
 }
 
 * {
@@ -35,6 +36,11 @@ body {
 .border-bottom {
   border-bottom: 1px #cccccc solid;
   padding-bottom: 10px;
+}
+
+.success-msg {
+  color: var(--sucess-color);
+  font-size: 15px;
 }
 
 /* ------Dialog Box-------- */
@@ -433,7 +439,7 @@ input[type="file"]::-webkit-file-upload-button {
 /* ------Reset Password-------- */
 .reset-password {
   width: 50%;
-  margin: 15vw auto;
+  margin: 10vw auto;
   border: 1px solid #cccccc;
   padding: 5vh 5vw;
 }
@@ -444,6 +450,10 @@ input[type="file"]::-webkit-file-upload-button {
 
 .reset-password > .sign-up-form > .form-group {
   margin-bottom: 20px;
+}
+
+.return-home {
+  text-decoration: none;
 }
 
 /* ------Profile About Section-------- */

@@ -11,7 +11,7 @@ const initialState = {
     isAuthenticated: false,
     user: null,
     loading: true,
-    msg: '',
+    msg: [],
     userLoaded: false
 }
 
@@ -48,7 +48,7 @@ function authReducer(state=initialState, action) {
         case UPDATE_MSG:
             return {
                 ...state,
-                msg: payload
+                msg: [ payload ]
             }     
         default:
             return state;    
