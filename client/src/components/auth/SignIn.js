@@ -75,10 +75,14 @@ const SignIn = ({ signInModalState, setSignInModalState, signIn, errors, isAuthe
                         ): <Fragment />   
                         ))
                     } 
-                    <small>Forgot password?</small>
+                    <small>
+                        <Link to="/forgot-password" className="forgot-password" onClick={() => setSignInModalState(false)}>
+                            Forgot password?
+                        </Link>
+                    </small>
                 </section>
                 <button type="submit" className="btn-primary">Sign In</button>
-                <small>Don't have an account? <Link to="signup-one" className="sign-in-link" onClick={() => setSignInModalState(false)}>
+                <small>Don't have an account? <Link to="/signup-one" className="sign-in-link" onClick={() => setSignInModalState(false)}>
                     Sign Up </Link>
                 </small>
             </form>

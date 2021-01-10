@@ -2,7 +2,8 @@ import { SIGNIN,
     SIGNOUT,
     USER_LOADED,
     AUTH_ERROR ,
-    CREATE_ACCOUNT
+    CREATE_ACCOUNT,
+    UPDATE_MSG
 } from '../actions/types';
 
 const initialState = {
@@ -10,6 +11,7 @@ const initialState = {
     isAuthenticated: false,
     user: null,
     loading: true,
+    msg: '',
     userLoaded: false
 }
 
@@ -42,7 +44,12 @@ function authReducer(state=initialState, action) {
                 token: null,
                 user: null,
                 userLoaded: false
-            }    
+            }   
+        case UPDATE_MSG:
+            return {
+                ...state,
+                msg: payload
+            }     
         default:
             return state;    
     }

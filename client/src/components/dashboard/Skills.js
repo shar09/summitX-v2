@@ -22,11 +22,11 @@ const Skills = ({ skills, addSkill, deleteSkill }) => {
     return (
         <Fragment>
             <div className="experience-new">
-                <h3 className>Skills</h3>
+                <h3>Skills</h3>
             </div>
             
             { !editSkills ? (
-                <div className="card">
+                <div className="fadeIn card">
                     <p className="experience-header">
                         <span className="company-name">Technical Skills</span>
                         <span className="edit-experience" onClick={ () => setEditSkills(true) }> <i className="far fa-edit"></i>
@@ -47,15 +47,15 @@ const Skills = ({ skills, addSkill, deleteSkill }) => {
                     </div>
                 </div>        
                 ) : (
-                    <div class="card">
-                        <p class="experience-header">
-                            <span class="company-name">Technical Skills</span>
-                            <span class="">
-                                <button class="add-exp-button" type="submit" onClick={ () => setEditSkills(false) }>Save</button>
+                    <div className="card">
+                        <p className="experience-header">
+                            <span className="company-name">Technical Skills</span>
+                            <span>
+                                <button className="add-exp-button" type="submit" onClick={ () => setEditSkills(false) }>Save</button>
                             </span>
                         </p>
                     
-                        <div class="skills-form">
+                        <div className="skills-form">
                             <form onSubmit={handleSubmit}>
                                 <input type="text" placeholder="Add Skills" 
                                     name="text"
@@ -67,10 +67,10 @@ const Skills = ({ skills, addSkill, deleteSkill }) => {
                             </form>
                         </div>
 
-                        <div class="skills-container">
+                        <div className="skills-container">
                             { skills.map (skill => (
                                 <span key={skill._id} className="skill edit-padding"> {skill.text} 
-                                    <i class="fas fa-window-close skill-delete" 
+                                    <i className="fas fa-window-close skill-delete" 
                                         onClick={ () => deleteSkill(skill._id)}
                                     /> 
                                 </span>

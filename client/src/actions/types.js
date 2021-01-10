@@ -4,6 +4,7 @@ export const SIGNIN = 'SIGNIN';
 export const SIGNOUT = 'SIGNOUT';
 export const USER_LOADED = 'USER_LOADED';
 export const AUTH_ERROR = 'AUTH_ERROR';
+export const UPDATE_MSG = 'UPDATE_MSG';
 export const CREATE_ACCOUNT = 'CREATE_ACCOUNT';
 export const CREATE_PROFILE = 'CREATE_PROFILE';
 export const UPDATE_PROFILE = 'UPDATE_PROFILE';

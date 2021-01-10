@@ -6,16 +6,16 @@ const User = require('../../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
-const sgTransport = require('nodemailer-sendgrid-transport');
+var sgTransport = require('nodemailer-sendgrid-transport');
 const crypto = require('crypto');
 
-let options = {
+var options = {
     auth: {
         api_key: `${process.env.sendgridapi}`
     }
 }
 
-let transporter = nodemailer.createTransport(sgTransport(options));
+var mailer = nodemailer.createTransport(sgTransport(options));
 
 // @route  GET api/auth
 // @desc   to load user on register/login
@@ -83,7 +83,11 @@ async (req, res) => {
     }    
 });
 
-router.post('/reset-password', check('email','Enter a valid email').isEmail(), (req, res) => {  
+// @route  POST api/auth
+// @desc   Login User
+// @access Public
+
+router.post('/password', check('email','Enter a valid email').isEmail(), (req, res) => {  
     crypto.randomBytes(256, async (err, buffer) => {
 
         try {
@@ -96,29 +100,33 @@ router.post('/reset-password', check('email','Enter a valid email').isEmail(), (
             const user = await User.findOne({ email: req.body.email });
     
             if(!user) {
-                return res.status(400).json({ errors: [{ msg: "Email not found", param: "email" }] });
+                return res.status(400).json({ errors: [{ msg: "Email not found", param: "fp-email" }] });
             }
     
             user.resetToken = token;
             user.expireToken = Date.now() + 3600000;
             await user.save();
-    
-            transporter.sendMail({
-                to: user.email,
-                from: "sharathtelu9@gmail.com",
-                subject: "Password Reset",
-                html: `
-                    <p>Your password reset link:</p>
-                    <a href="http://localhost:3000/reset/${token}">Link</a>
-                `
+            
+            var email = {
+                to: 'pratyushatelu@gmail.com',
+                from: 'sharathtelu9@gmail.com',
+                subject: 'Hi there',
+                text: 'Awesome sauce',
+                html: '<b>Awesome sauce</b>'
+            };
+             
+            mailer.sendMail(email, function(err, res) {
+                if (err) { 
+                    console.log(err) 
+                }
+                console.log(res);
             });
     
-            res.json({ msg: "Check your email" });           
+            return res.json({ msg: "Check your email for reset-password link." });
         } catch (err) {
             console.log(err.message);
             res.status(500).send('Server Error');
         }
-
     });
 });
 

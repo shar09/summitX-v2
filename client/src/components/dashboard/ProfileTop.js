@@ -21,8 +21,8 @@ const ProfileTop = ({ profile, editName, updateProfile }) => {
     }
 
     const initialState = {
-        firstname: capitalizeFirst(profile.user.firstname),
-        lastname: capitalizeFirst(profile.user.lastname),
+        // firstname: capitalizeFirst(profile.user.firstname),
+        // lastname: capitalizeFirst(profile.user.lastname),
         position: transformWord(profile.position),
         summary: profile.summary,
         city: capitalizeFirst(profile.city),
@@ -32,7 +32,7 @@ const ProfileTop = ({ profile, editName, updateProfile }) => {
 
     const [formData, setFormData] = useState(initialState);
 
-    const { firstname, lastname, position, summary, city, state, linkedin } = formData;
+    const { position, summary, city, state, linkedin } = formData;
 
     const handleChange = e => {
         setFormData({
@@ -88,14 +88,13 @@ const ProfileTop = ({ profile, editName, updateProfile }) => {
                         <button className="add-exp-button" 
                             type="submit"
                             form="profile-top"
-                            onClick={handleSubmit}
                         >
                             Save
                         </button>
                         <span className="exp-cancel" onClick={ () => { setEditMode(false);  setInitialState(); }}>Cancel</span>
                     </span>
                 </p>
-                <form id="profile-top" className={` ${editMode} ? 'exp-form'`}>
+                <form id="profile-top" className={` ${editMode ? 'exp-form': ''}`} onSubmit={handleSubmit}>
                     {/* <div className="form-group">
                         <label htmlFor="first-name">First Name</label>
                         <input type="text" id="first-name" placeholder="First Name" 

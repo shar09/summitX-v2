@@ -52,7 +52,7 @@ const Resume = ({errors, resume, uploadResume, resetErrors }) => {
                     </a>
                 </div>
             ) : (
-                <div className="card">
+                <div className="fadeIn card">
                     <p className="experience-header">
                         <span className="company-name">Upload Resume (PDF)</span>
                         <span className="">

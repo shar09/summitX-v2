@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, Fragment } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -10,6 +10,8 @@ import image3 from '../../images/img-3.jpg';
 import image4 from '../../images/img-4.jpg';
 
 const Landing = ({ auth: { isAuthenticated, loading, userLoaded, user } }) => { 
+
+    const [ dialog, closeDialog ] = useState(true);
 
     if (loading) {
         return <Spinner />
@@ -32,6 +34,19 @@ const Landing = ({ auth: { isAuthenticated, loading, userLoaded, user } }) => {
     
     return (
         <div className="landing">
+            { dialog ? (
+                <div className="dialog">
+                    <small className="dialog-text">This website is still in development phase and we will not be reviewing any profiles yet. If you have any queries, 
+                        please reach out to <span className="my-email">'sunmarsearth@gmail.com'</span>
+                        <span className="dialog-close"
+                            onClick={ () => closeDialog(false) }
+                        >
+                            [<i className="fas fa-times"></i>]
+                        </span>
+                    </small>
+                </div>
+                ) : <Fragment />
+            }
             <div className="home-grid">
                 <div className="content">
                     <h3 className="content-heading">Who we are</h3>

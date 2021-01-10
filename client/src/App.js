@@ -9,6 +9,8 @@ import SignUpOne from './components/auth/signup/SignUpOne';
 import SignUpTwo from './components/auth/signup/SignUpTwo';
 import SignUpThree from './components/auth/signup/SignUpThree';
 import Dashboard from './components/dashboard/Dashboard';
+import ForgotPassword from './components/auth/ForgotPassword';
+
 // Redux
 import { Provider } from 'react-redux';
 import store from './store';
@@ -48,6 +50,7 @@ const App = () => {
                         <Route exact path="/signup-one"> 
                             <SignUpOne setSignInModalState={setSignInModalState} />
                         </Route>
+                        <Route exact path="/forgot-password" component={ForgotPassword}/>
                         <PrivateRoute exact path="/signup-two" component={SignUpTwo} />
                         <PrivateRoute exact path="/signup-three" component={SignUpThree} />
                         <PrivateRoute exact path="/dashboard" component={Dashboard} />

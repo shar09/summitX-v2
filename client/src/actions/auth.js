@@ -5,7 +5,8 @@ import { SIGNIN,
     USER_LOADED,
     AUTH_ERROR,
     CREATE_ACCOUNT,
-    CLEAR_PROFILE
+    CLEAR_PROFILE,
+    UPDATE_MSG
 } from './types'; 
 
 // Load User
@@ -86,6 +87,26 @@ export const editName = (firstname, lastname) => async dispatch => {
     }
 }
 
+// Reset Password
+export const forgotPassword = email => async dispatch => {
+
+    try {
+        const res = await api.post('/auth/password', email);
+
+        dispatch({
+            type: UPDATE_MSG,
+            payload: res.data
+        });
+
+    } catch (err) {
+        const errors = err.response.data.errors;
+
+        if(errors) {
+            errors.forEach(error => dispatch(setError(error.msg, error.param)));
+        }
+    }
+}
+
 // Signout
 export const signOut = () => async dispatch => {
     dispatch({
@@ -96,3 +117,4 @@ export const signOut = () => async dispatch => {
         type: CLEAR_PROFILE
     });
 }
+
