@@ -5,9 +5,9 @@ import PropTypes from 'prop-types';
 import Spinner from './Spinner';
 
 // Images
-import image1 from '../../images/img-1.jpeg';
-import image3 from '../../images/img-3.jpg';
-import image4 from '../../images/img-4.jpg';
+import image1 from '../../images/img-1s.jpg';
+import image3 from '../../images/img-3s.jpg';
+import image4 from '../../images/img-4s.jpg';
 
 const Landing = ({ auth: { isAuthenticated, loading, userLoaded, user } }) => { 
 

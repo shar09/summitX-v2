@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from 'react';
-import signupimg from '../../../images/signup-img.jpg';
+import signupimg from '../../../images/signup-imgs.jpg';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';

@@ -1,5 +1,5 @@
 import React from 'react';
-import contactImg from '../../images/contact.jpg';
+import contactImg from '../../images/contacts.jpg';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';

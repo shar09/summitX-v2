@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
-import signupimg from '../../../images/signup-img.jpg';
+import signupimg from '../../../images/signup-imgs.jpg';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { createAccount } from '../../../actions/auth';

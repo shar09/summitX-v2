@@ -1,9 +1,7 @@
 import React, { Fragment, useState } from 'react';
-import { Redirect } from 'react-router-dom';
-import image from '../../images/forgot-password.jpg';
+import image from '../../images/forgot-passwords.jpg';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Spinner from '../layout/Spinner';
 import { forgotPassword } from '../../actions/auth';
 
 const ForgotPassword = ({ auth: { msg }, errors, forgotPassword  }) => {
