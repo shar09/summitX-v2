@@ -331,7 +331,7 @@ router.post('/experience', auth, [
             to,
         }
 
-        profile.experience.push(experience);
+        profile.experience.unshift(experience);
 
         await profile.save();
 
@@ -470,7 +470,7 @@ router.post('/education', auth, [
             to
         }
 
-        profile.education.push(education);
+        profile.education.unshift(education);
 
         await profile.save();
 
