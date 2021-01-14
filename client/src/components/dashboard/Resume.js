@@ -52,7 +52,6 @@ const Resume = ({ errors, resume, updateResume, resetErrors }) => {
                     <p onClick={ () => setShowEditResume(true) }><i className="fas fa-plus"></i> Upload New </p>
                 </div>
 
-            
                 { !showEditResume ? (
                     <div className="show-resume">
                         <span className="resume-name">{resume.name}</span>
