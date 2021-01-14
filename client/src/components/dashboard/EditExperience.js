@@ -12,8 +12,6 @@ const EditExperience = ({ exp, editExperience, deleteExperience }) => {
         description: exp.description
     }
 
-    console.log(initialState);
-
     const [showEdit, setShowEdit] = useState([ exp._id, false ]);
 
     const [editExp, setEditExp] = useState(initialState);
