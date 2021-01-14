@@ -44,7 +44,7 @@ const SignUpThree = ({ uploadResume,
     return (
         <section className="landing-forms">
             <div className="side-image">
-                <img src={signupimg} />
+                <img alt="fancy" src={signupimg} />
             </div>
             <form className="sign-up-form" onSubmit={handleSubmit}>
                 <h1 className="">Let's create your profile</h1>

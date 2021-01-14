@@ -57,7 +57,7 @@ const Landing = ({ auth: { isAuthenticated, loading, userLoaded, user } }) => {
                         you find the right candidate based off your requirements.
                     </p>
                 </div>
-                <img src={image1} />
+                <img alt="fancy" src={image1} />
             </div>
             <div className="home-grid">
                 <div className="content">
@@ -67,9 +67,9 @@ const Landing = ({ auth: { isAuthenticated, loading, userLoaded, user } }) => {
                         You are in the right place. Sign Up and let us know more about you and we'll get in touch with you. We 
                         value your time and every candidate that is enrolled in summitX will hear back from us.
                     </p>
-                    <Link to="signup-one" className="btn-primary content-button">Sign Up</Link>
+                    <Link to="/signup-one" className="btn-primary content-button">Sign Up</Link>
                 </div>
-                <img src={image4} />
+                <img alt="fancy" src={image4} />
             </div>
             <div className="home-grid">
                 <div className="content">
@@ -79,9 +79,9 @@ const Landing = ({ auth: { isAuthenticated, loading, userLoaded, user } }) => {
                         consulting services in salesforce for your project? We are here to help. Contact Us and we will get in
                         touch with you.
                     </p>
-                    <a href="#" className="btn-primary content-button">Contact Us</a>
+                    <Link to="/contact" className="btn-primary content-button">Contact Us</Link>
                 </div>
-                <img src={image3} />
+                <img alt="fancy" src={image3} />
             </div>
         </div>    
     )

@@ -56,7 +56,7 @@ const Resume = ({ errors, resume, updateResume, resetErrors }) => {
                 { !showEditResume ? (
                     <div className="show-resume">
                         <span className="resume-name">{resume.name}</span>
-                        <a href={resume.location} target="_blank"
+                        <a href={resume.location} target="_blank" rel="noreferrer"
                             className="resume-link"
                         >
                             View your resume

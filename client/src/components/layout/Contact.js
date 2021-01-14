@@ -29,7 +29,7 @@ const Contact = ({ auth: { isAuthenticated, loading, userLoaded, user } }) => {
     return (
         <section className="landing-forms">
             <div className="side-image">
-                <img src={contactImg} />
+                <img alt="fancy" src={contactImg} />
             </div>
             <form className="sign-up-form">
                 <h1 className="">Let us know your requirements</h1>

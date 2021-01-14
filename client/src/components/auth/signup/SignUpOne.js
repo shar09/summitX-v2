@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import signupimg from '../../../images/signup-imgs.jpg';
 import { connect } from 'react-redux';
@@ -62,7 +62,7 @@ const SignUpOne = ({ setSignInModalState, createAccount, setError, resetErrors,
     return (
         <section className="landing-forms">
             <div className="side-image">
-                <img src={signupimg} />
+                <img alt="fancy" src={signupimg} />
             </div>
             <form className="sign-up-form" onSubmit={handleSubmit}>
                 <h1 className="">Let's create your account</h1>

@@ -21,7 +21,7 @@ const ForgotPassword = ({ auth: { msg }, errors, forgotPassword  }) => {
     return (
         <section className="landing-forms">
             <div className="side-image">
-                <img src={image} />
+                <img alt="fancy" src={image} />
             </div>
             <form className="sign-up-form" onSubmit={handleSubmit}>
                 <h1 className="">Forgot your password?</h1>

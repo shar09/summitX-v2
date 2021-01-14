@@ -76,7 +76,7 @@ export const createAccount = (formData) => async dispatch => {
 export const editName = (firstname, lastname) => async dispatch => {
     
     try {
-        const res = await api.put('/users', { firstname, lastname });
+        //const res = await api.put('/users', { firstname, lastname });
 
         dispatch(loadUser());
 

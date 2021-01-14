@@ -415,6 +415,15 @@ input[type="password"] {
   border-radius: 2px;
 }
 
+select {
+  display: block;
+  width: 100%;
+  padding: 0.3rem;
+  border: 1px solid #aaaaaa;
+  border-radius: 2px;
+  
+}
+
 input[type="file"]::-webkit-file-upload-button {
   height: 25px;
 }

@@ -9,7 +9,7 @@ import {
 
 } from './types';
 import { loadUser } from './auth';
-import { setError, resetErrors } from './error';
+import { setError } from './error';
 
 // Create Profile
 export const createProfile = formData => async dispatch => {
