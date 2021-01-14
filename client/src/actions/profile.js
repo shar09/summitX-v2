@@ -92,6 +92,27 @@ export const uploadResume = resume => async dispatch => {
     }
 }
 
+// Update Resume
+export const updateResume = resume => async dispatch => {
+    // dispatch(resetErrors()); 
+
+    try {
+        const res = await api.post('/profile/resume', resume);
+
+        dispatch({
+            type: UPLOAD_RESUME,
+            payload: res.data
+        });
+    }
+    catch (err) {
+        const errors = err.response.data.errors;
+    
+        if(errors) {
+            errors.forEach(error => dispatch(setError(error.msg, error.param)));
+        }
+    }
+}
+
 // Get Resume
 // export const getResume = () => async dispatch => {
 //     try {

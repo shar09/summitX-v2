@@ -6,11 +6,13 @@ const EditExperience = ({ exp, editExperience, deleteExperience }) => {
     const initialState = {
         company: exp.company,
         title: exp.title,
-        from: formatExp(formatDate(exp.from)),
-        to: formatExp(formatDate(exp.to)),
+        from: formatExp(exp.from),
+        to: formatExp(exp.to),
         current: exp.current,
         description: exp.description
     }
+
+    console.log(initialState);
 
     const [showEdit, setShowEdit] = useState([ exp._id, false ]);
 
@@ -48,7 +50,7 @@ const EditExperience = ({ exp, editExperience, deleteExperience }) => {
                         <span className="icon-text"> Edit</span> 
                     </span>
                 </p>
-                <p className="position">{title} <span className="date">{formatDate(exp.from)} - {exp.to ? formatDate(exp.to) : 'Present'}</span> </p>
+                <p className="position"><span className="bold-text">{title}</span> <span className="date"> | {formatDate(exp.from)} - {exp.to ? formatDate(exp.to) : 'Present'}</span> </p>
                 <p className="experience-summary">{exp.description}</p>
             </div>
         ) : (
@@ -143,7 +145,9 @@ function formatExp(d) {
         return null;
     }
 
-    let dateArray = d.split('/');
+    let date = new Intl.DateTimeFormat().format(new Date(d));
+
+    let dateArray = date.split('/');
     let month = "";
     let day = "";
 

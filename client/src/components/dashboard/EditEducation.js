@@ -7,8 +7,8 @@ const EditEducation = ({ edu, editEducation, deleteEducation }) => {
         school: edu.school,
         degree: edu.degree,
         fieldofstudy: edu.fieldofstudy,
-        from: formatEdu(formatDate(edu.from)),
-        to: formatEdu(formatDate(edu.to)),
+        from: formatEdu(edu.from),
+        to: formatEdu(edu.to),
         description: edu.description
     }
 
@@ -48,7 +48,7 @@ const EditEducation = ({ edu, editEducation, deleteEducation }) => {
                         <span className="icon-text"> Edit</span> 
                     </span>
                 </p>
-                <p className="position">{degree}, {fieldofstudy} <span className="date">{formatDate(edu.from)} - {edu.to ? formatDate(edu.to) : 'Present'}</span> </p>
+                <p className="position"><span className="bold-text">{degree}, {fieldofstudy}</span> <span className="date"> | {formatDate(edu.from)} - {edu.to ? formatDate(edu.to) : 'Present'}</span> </p>
                 <p className="experience-summary">{edu.description}</p>
             </div>
         ) : (
@@ -139,7 +139,9 @@ function formatEdu(d) {
         return null;
     }
 
-    let dateArray = d.split('/');
+    let date = new Intl.DateTimeFormat().format(new Date(d));
+
+    let dateArray = date.split('/');
     let month = "";
     let day = "";
 

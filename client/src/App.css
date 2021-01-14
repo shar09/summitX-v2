@@ -43,6 +43,10 @@ body {
   font-size: 15px;
 }
 
+.bold-text {
+  font-weight: 500;
+}
+
 /* ------Dialog Box-------- */
 .dialog {
   position: fixed;
@@ -587,10 +591,11 @@ input[type="file"]::-webkit-file-upload-button {
 
 .company-name {
   font-size: 16px;
+  font-weight: 500;
 }
 
 .date {
-  color: var(--gray-color);
+  color: #464545;
   font-size: 0.9em;
 }
 
@@ -606,19 +611,24 @@ input[type="file"]::-webkit-file-upload-button {
 }
 
 .card {
-  border: 1px solid #cccccc;
+  /* border: 1px solid #cccccc; */
   margin-bottom: 20px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+  padding: 20px;
 }
 
 .card > p {
   margin: 0;
   margin-bottom: 10px;
-  line-height: normal;
+  /* line-height: normal; */
   padding: 0 10px;
+  margin-left: 10px;
 }
 
 .card > p:first-child {
-  padding: 10px;
+  padding: 15px 20px;
+  border-radius: 4px;
+  margin-left: 0;
 }
 
 /* ------Add Experience-------- */
@@ -690,6 +700,7 @@ input[type="file"]::-webkit-file-upload-button {
 .show-resume {
   background-color: whitesmoke;
   padding: 20px;
+  border-radius: 4px;
 }
 
 .resume-name {
@@ -971,6 +982,10 @@ input[type="file"]::-webkit-file-upload-button {
 
   .delete-modal {
     height: 220px;
+  }
+
+  .card {
+    padding: 10px;
   }
 }
 

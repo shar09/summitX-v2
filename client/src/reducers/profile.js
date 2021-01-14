@@ -48,10 +48,13 @@ function profileReducer(state=initialState, action) {
                 ...state,
                 profile: {
                     ...state.profile,
-                    resume: payload
+                    resume: {
+                        ...state.profile.resume,
+                        ...payload
+                    }
                 },
                 profileLoading: false
-            } 
+            }     
         case UPDATE_SKILL:
             return {
                 ...state,
