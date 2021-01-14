@@ -113,7 +113,7 @@ router.post('/password', check('email','Enter a valid email').isEmail(), (req, r
                 subject: 'summitX reset password link',
                 html: `
                     <p>Hello ${user.firstname}</p>
-                    <p>Click on this <a href="http://localhost:3000/reset/${token}">Link</a> to reset your password.</p>
+                    <p>Click on this <a href="https://summitx-v1.herokuapp.com/reset/${token}">Link</a> to reset your password.</p>
                 `
             };
 
