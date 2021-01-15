@@ -3,7 +3,7 @@ function formatDate(date) {
         return null;
     }
 
-    let months = [null, 'Jan', 'Feb', 'Mar', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    let months = [null, 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
     let dateArray =  new Intl.DateTimeFormat().format(new Date(date)).split('/');
 
