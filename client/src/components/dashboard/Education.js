@@ -36,6 +36,7 @@ const Education = ({ education, addEducation, editEducation, deleteEducation }) 
         e.preventDefault();
         setAddEdu(false);
         addEducation(newEdu);
+        setInitialState();
     }
 
     return (

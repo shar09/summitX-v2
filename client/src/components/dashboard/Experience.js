@@ -36,6 +36,7 @@ const Experience = ({ experience, addExperience, editExperience, deleteExperienc
         e.preventDefault();
         setAddExp(false);
         addExperience(newExp);
+        setInitialState();
     }
 
     return (
