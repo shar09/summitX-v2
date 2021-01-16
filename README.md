@@ -13,7 +13,7 @@ This website is developed for summitX which is a startup for salesforce staffing
 ## Demo of the current version of the website
 
 - Sign Up and Account Actions: [View Here](https://drive.google.com/file/d/19OBJ70rAGlrYVYg3bSfZx2l-YpjBYgHe/view?usp=sharing)
-- Sign In and Profile Actions: [View Here](https://drive.google.com/file/d/13AZYk6ZaGOgHivKNg9GPZaOBbokE1Y12/view?usp=sharin
+- Sign In and Profile Actions: [View Here](https://drive.google.com/file/d/13AZYk6ZaGOgHivKNg9GPZaOBbokE1Y12/view?usp=sharing)
 
 ## Site Deployed (Development Phase)
 
