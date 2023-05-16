@@ -1,4 +1,4 @@
-# summitX-v1
+# summitX-v2
 
 This website is developed for summitX which is a startup for salesforce staffing based in Austin, TX. The current version of the allows job seekers looking for positions in salesforce development. It implements a range of features from user authentication, adding background, expreience, skills and uploading files.  
 
